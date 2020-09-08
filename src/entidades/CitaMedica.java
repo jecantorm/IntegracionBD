@@ -1,38 +1,48 @@
 package entidades;
 
+import java.sql.Date;
+import java.sql.Time;
+
 public class CitaMedica {
 
     private long idCita;
-    private int idPaciente;
+    private Paciente paciente;
+    private Sede sede;
     private String especialidad;
-    private String fecha;
-    private int idSede;
+    private Date fecha;
+    private Time hora;
 
-    public CitaMedica(long idCita, int idPaciente, String especialidad, String fecha, int idSede){
-        this.idCita = idCita;
-        this.idPaciente = idPaciente;
+
+    public CitaMedica(Paciente paciente, Sede sede, String especialidad, Date fecha, Time hora){
+        this.paciente = paciente;
         this.especialidad = especialidad;
         this.fecha = fecha;
-        this.idSede = idSede;
+        this.sede = sede;
+        this.hora = hora;
+        this.idCita = this.hashCode();
     }
 
     public long getIdCita() {
         return idCita;
     }
 
-    public int getIdPaciente() {
-        return idPaciente;
+    public Paciente getPaciente() {
+        return paciente;
     }
 
     public String getEspecialidad() {
         return especialidad;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public int getIdSede() {
-        return idSede;
+    public Sede getSede() {
+        return sede;
+    }
+
+    public Time getHora() {
+        return hora;
     }
 }

@@ -1,7 +1,9 @@
 import servicios.AdministradorBDL;
+import servicios.DriverConexionBDC;
 import servicios.LectorBDC;
 import servicios.TransformadorDatos;
 
+import java.sql.ResultSet;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,12 +25,13 @@ public class IntegradorBD {
     private static final String MARCA_LOGGER = "IntegradorBD";
 
     public IntegradorBD(){
-        this.lectorBDC = new LectorBDC();
-        this.transformadorDatos = new TransformadorDatos();
-        this.administradorBDL = new AdministradorBDL();
-        this.corriendo = true;
-        this.detener = false;
-        correr();
+
+        DriverConexionBDC driverConexionBDC = new DriverConexionBDC();
+        driverConexionBDC.conectarseBDInformix();
+        ResultSet r = driverConexionBDC.realizarPeticion();
+        LectorBDC lector = new LectorBDC(r);
+        lector.transformarDatos();
+        AdministradorBDL administradorBDL = new AdministradorBDL(lector.getCitasMedicas());
     }
 
     public void correr(){
@@ -53,12 +56,10 @@ public class IntegradorBD {
     }
 
     private void realizarConexionBD(){
-        administradorBDL.conectarseBDPostgres();
-        administradorBDL.conectarseBDInformix();
+
     }
 
     public static void main(String[] args){
         IntegradorBD integradorBD = new IntegradorBD();
-        logger.log(Level.INFO, "Se ha iniciado el servicio");
     }
 }
