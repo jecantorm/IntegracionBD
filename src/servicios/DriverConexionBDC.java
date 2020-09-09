@@ -1,6 +1,5 @@
 package servicios;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.logging.Logger;
 
@@ -13,6 +12,7 @@ public class DriverConexionBDC {
     public DriverConexionBDC(){
         conectarseBDInformix();
         realizarPeticion();
+        peticionPacientesPreferenciales();
     }
 
     public void conectarseBDInformix(){
@@ -75,5 +75,17 @@ public class DriverConexionBDC {
             return respuesta;
         }
 
+    }
+
+    public ResultSet peticionPacientesPreferenciales(){
+        ResultSet rta = null;
+        String query = "SELECT * FROM basdat:informix.incle incle " +
+                "WHERE (incle.cleest = '0');";
+        try {
+            rta = conn.prepareStatement(query).executeQuery();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return rta;
     }
 }

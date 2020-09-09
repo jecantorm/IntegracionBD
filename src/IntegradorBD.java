@@ -27,9 +27,10 @@ public class IntegradorBD {
     public IntegradorBD(){
 
         DriverConexionBDC driverConexionBDC = new DriverConexionBDC();
-        ResultSet r = driverConexionBDC.realizarPeticion();
-        if(r != null){
-            LectorBDC lector = new LectorBDC(r);
+        ResultSet conjuntoDatos = driverConexionBDC.realizarPeticion();
+        ResultSet conjuntoPreferenciales = driverConexionBDC.peticionPacientesPreferenciales();
+        if(conjuntoDatos != null && conjuntoPreferenciales != null){
+            LectorBDC lector = new LectorBDC(conjuntoDatos, conjuntoPreferenciales);
             lector.transformarDatos();
             AdministradorBDL administradorBDL = new AdministradorBDL(lector.getCitasMedicas());
         }else{
