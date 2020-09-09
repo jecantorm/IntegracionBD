@@ -22,33 +22,39 @@ public class LectorBDC {
     }
 
     public void transformarDatos(){
+        System.out.println("Transformando datos recibidos");
         try{
             while(r.next()){
-                //Extracción de la información del paciente
-                String idPaciente = r.getString("pacide");
-                String nombre1 = r.getString("pacnob");
-                String nombre2 = r.getString("pacn2b");
-                String apellido1 = r.getString("paca1b");
-                String apellido2 = r.getString("paca2b");
+                try{
+                    //Extracción de la información del paciente
+                    String strIdPaciente = r.getString("pacide");
+                    String nombre1 = r.getString("pacnob");
+                    String nombre2 = r.getString("pacn2b");
+                    String apellido1 = r.getString("paca1b");
+                    String apellido2 = r.getString("paca2b");
 
-                String nombrePaciente = nombre1 + " " + nombre2 + " " + apellido1 + " " + apellido2;
-                boolean preferencial = false;
-                Paciente paciente = new Paciente(idPaciente, preferencial, nombrePaciente);
+                    String nombrePaciente = nombre1 + " " + nombre2 + " " + apellido1 + " " + apellido2;
+                    boolean preferencial = false;
+                    long idPaciente = Long.parseLong(strIdPaciente);
+                    Paciente paciente = new Paciente(idPaciente, preferencial, nombrePaciente);
 
-                //Extracción de la información de la compañia
-                String nombreCompania = r.getString("cianom");
-                String strCodigoCompania = r.getString("ciacod");
-                int codigoCompania = Integer.parseInt(strCodigoCompania);
-                Sede sede = new Sede(codigoCompania, nombreCompania);
+                    //Extracción de la información de la compañia
+                    String nombreCompania = r.getString("cianom");
+                    String strCodigoCompania = r.getString("ciacod");
+                    int codigoCompania = Integer.parseInt(strCodigoCompania);
+                    Sede sede = new Sede(codigoCompania, nombreCompania);
 
-                //Extracción de la información de la cita médica
-                String especialidadCita = r.getString("espnom");
-                Date fechaCita = r.getDate("citfci");
-                Time horaCita = r.getTime("cithor");
-                CitaMedica citaMedica = new CitaMedica(paciente, sede, especialidadCita, fechaCita, horaCita);
-                citasMedicas.add(citaMedica);
+                    //Extracción de la información de la cita médica
+                    String especialidadCita = r.getString("espnom");
+                    Date fechaCita = r.getDate("citfci");
+                    Time horaCita = r.getTime("cithor");
+                    CitaMedica citaMedica = new CitaMedica(paciente, sede, especialidadCita, fechaCita, horaCita);
+                    citasMedicas.add(citaMedica);
+                }catch(Exception e){
+                    //Do nonthing
+                }
             }
-            System.out.println("El numero de citas médicas es de: " + citasMedicas.size() + " citas");
+            System.out.println("Se transformaron " + citasMedicas.size() + " citas médicas");
         }catch(Exception e){
             e.printStackTrace();
         }

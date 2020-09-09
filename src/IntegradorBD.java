@@ -27,11 +27,15 @@ public class IntegradorBD {
     public IntegradorBD(){
 
         DriverConexionBDC driverConexionBDC = new DriverConexionBDC();
-        driverConexionBDC.conectarseBDInformix();
         ResultSet r = driverConexionBDC.realizarPeticion();
-        LectorBDC lector = new LectorBDC(r);
-        lector.transformarDatos();
-        AdministradorBDL administradorBDL = new AdministradorBDL(lector.getCitasMedicas());
+        if(r != null){
+            LectorBDC lector = new LectorBDC(r);
+            lector.transformarDatos();
+            AdministradorBDL administradorBDL = new AdministradorBDL(lector.getCitasMedicas());
+        }else{
+            System.out.println("El ResultSet es nulo");
+        }
+
     }
 
     public void correr(){

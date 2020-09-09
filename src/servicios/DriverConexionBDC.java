@@ -1,5 +1,6 @@
 package servicios;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.logging.Logger;
 
@@ -26,7 +27,7 @@ public class DriverConexionBDC {
         try
         {
             conn = DriverManager.getConnection(url);
-            System.out.println("Conexión exitosa con la BD");
+            System.out.println("Conexión exitosa con la BD informix");
         }
         catch (SQLException e)
         {
@@ -40,6 +41,7 @@ public class DriverConexionBDC {
     }
 
     public ResultSet realizarPeticion(){
+        System.out.println("Realizando petición de datos a infromix");
         ResultSet respuesta = null;
         String peticion = "SELECT\n" +
                 "abpac.pacide,\n" +
@@ -66,7 +68,7 @@ public class DriverConexionBDC {
         try{
             PreparedStatement pstmt = conn.prepareStatement(peticion);
             respuesta = pstmt.executeQuery();
-            System.out.println("terminó");
+            System.out.println("Datos recbidos correctamente");
             return respuesta;
         }catch(Exception e){
             e.printStackTrace();

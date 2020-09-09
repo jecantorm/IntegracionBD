@@ -2,17 +2,17 @@ package entidades;
 
 public class Paciente {
 
-    private String idPaciente;
+    private long idPaciente;
     private boolean preferencial;
     private String nombre;
 
-    public Paciente(String idPaciente, boolean preferencial, String nombre){
+    public Paciente(long idPaciente, boolean preferencial, String nombre){
         this.idPaciente = idPaciente;
         this.preferencial = preferencial;
         this.nombre = nombre;
     }
 
-    public String getIdPaciente() {
+    public long getIdPaciente() {
         return idPaciente;
     }
 
