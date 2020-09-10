@@ -12,6 +12,7 @@ import javax.naming.InitialContext;
 import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AdministradorBDL {
@@ -19,41 +20,52 @@ public class AdministradorBDL {
     private ArrayList<CitaMedica> citasMedicas;
     private Connection conexion;
 
+    private static final String URL = "jdbc:postgresql://localhost:5432/informix";
+    private static final String USUARIO = "postgres";
+    private static final String CONTRASENIA = "12345";
+    private final static Logger logger = Logger.getLogger(AdministradorBDL.class.getName());
+
     public AdministradorBDL(ArrayList<CitaMedica> citasMedicas){
         this.citasMedicas = citasMedicas;
-        conectarseBDPostgres();
-        if(conexion != null){
-            guardarDatosBDPostgres();
-            crearTablasAuxiliares(crearAgrupaciones());
-        }else{
-            System.out.println("La conexión con postgres no existe");
-        }
     }
 
-    public void conectarseBDPostgres(){
+    public boolean conectarseBDPostgres(){
+        boolean exitoso = true;
         conexion = null;
         try{
-            conexion = DriverManager.getConnection("jdbc:postgresql://localhost:5432/informix",
-                    "postgres", "12345");
-            System.out.println("Conectado a la BD local en Postgres");
+            conexion = DriverManager.getConnection(URL,
+                    USUARIO, CONTRASENIA);
+            exitoso = true;
+           logger.log(Level.INFO,"Conectado a la BD local Postgres");
         }catch (Exception e){
-            System.out.println("Error al conectarse con Postgres");
+            logger.log(Level.SEVERE,"Error al conectarse con Postgres");
             e.printStackTrace();
+            exitoso = false;
         }
+        return exitoso;
     }
 
-    public void guardarDatosBDPostgres(){
+    public boolean vaciarTablas(){
         String deleteCitaMedica = "DELETE FROM citamedica;";
         String deletePaciente = "DELETE FROM paciente;";
         String deleteSede = "DELETE FROM sede;";
         String dropConsultas = "DROP TABLE consultasfull;";
+        boolean exitoso = true;
         try {
             conexion.prepareStatement(deleteCitaMedica).execute();
             conexion.prepareStatement(deletePaciente).execute();
             conexion.prepareStatement(deleteSede).execute();
+            conexion.prepareStatement(dropConsultas).execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Error al vaciar las tablas de Postgres\n " +
+                    "Causa: " + e.getMessage());
+            exitoso = false;
         }
+        return exitoso;
+    }
+
+    public void guardarDatosBDPostgres(){
+        int contador = 0;
         for(CitaMedica citaMedica : citasMedicas){
             //Inserción de sedes
             Sede sede = citaMedica.getSede();
@@ -69,7 +81,7 @@ public class AdministradorBDL {
                     //System.out.println("La sede " + sede.getNombre() + " no se insertó porque ya existe");
                 }
             } catch (SQLException e) {
-                System.out.println("Error al insertar sede: " + e.getCause());
+                logger.log(Level.WARNING, "Error al insertar sede: " + e.getMessage());
             }
 
             //Inserción de pacientes
@@ -86,7 +98,7 @@ public class AdministradorBDL {
                     //System.out.println("El paciente " + paciente.getIdPaciente() + " no se insertó porque ya existe");
                 }
             } catch (SQLException e) {
-                System.out.println("Error al insertar paciente: " + e.getCause());
+                logger.log(Level.WARNING, "Error al insertar paciente: " + e.getMessage());
             }
 
             //Inserción de citas médicas
@@ -101,35 +113,39 @@ public class AdministradorBDL {
                 ResultSet rs = conexion.prepareStatement(querySelectCita).executeQuery();
                 if(!rs.next()){
                     conexion.prepareStatement(queryInsertCita).execute();
+                    contador++;
                 }else{
                     //No se inserta porque ya existe
                     //System.out.println("La cita " + citaMedica.getIdCita() + " no se insertó porque ya existe");
                 }
             } catch (SQLException e) {
-                System.out.println("Error al insertar cita: " + e.getCause());
-                e.printStackTrace();
+                logger.log(Level.WARNING,"Error al insertar cita: " + e.getMessage());
             }
         }
-        try {
-            conexion.prepareStatement(dropConsultas).execute();
-        } catch (SQLException e) {
-            //e.printStackTrace();
-        }
-        String queryView = "CREATE TABLE consultasfull AS(\n" +
+        logger.log(Level.INFO, "Citas médicas recibidas de informix: " + citasMedicas.size() + "\n" +
+                "Citas médicas guardadas en Postgres: " + contador);
+    }
+
+    public boolean crearTablaConsultasFull(){
+        boolean exitoso = true;
+        String queryConsultasFull = "CREATE TABLE consultasfull AS(\n" +
                 "SELECT id_cita, paciente.id_paciente, paciente.nombre as nombre_paciente, sede.nombre as nombre_sede, especialidad, fecha, hora FROM\n" +
                 "citamedica INNER JOIN paciente ON citamedica.id_paciente = paciente.id_paciente\n" +
                 "INNER JOIN sede ON citamedica.id_sede = sede.id_sede\n" +
                 ");";
         try {
-            System.out.println("Creando tabla de consultas completa");
-            conexion.prepareStatement(queryView).execute();
+            logger.log(Level.INFO, "Creando tabla de consultas completa");
+            conexion.prepareStatement(queryConsultasFull).execute();
+            logger.log(Level.INFO, "Se creó la tabla consultasfull en Postgres");
         } catch (SQLException e) {
-            System.out.println("Error al crear la tabla de consultas");
+            logger.log(Level.SEVERE, "Error al crear la tabla de consultas completa");
             e.printStackTrace();
+            exitoso = false;
         }
+        return exitoso;
     }
 
-    private ArrayList<AgrupacionCitas> crearAgrupaciones(){
+    public ArrayList<AgrupacionCitas> crearAgrupaciones(){
         ArrayList<AgrupacionCitas> listaAgrupaciones = new ArrayList<>();
         String queryAgrupacion = "SELECT id_paciente, COUNT(id_paciente) as num_citas FROM consultasfull GROUP BY id_paciente;";
         try {
@@ -142,23 +158,26 @@ public class AdministradorBDL {
                     listaAgrupaciones.add(agrupacion);
                     //System.out.println(idPaciente);
                 }catch(Exception e){
-                    e.printStackTrace();
+                    logger.log(Level.WARNING, "Error al traer datos para crear agrupación \n" +
+                            "Causa: " + e.getMessage());
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error al hacer agrupación de citas");
+            logger.log(Level.WARNING, "Error al crear agrupación \n" +
+                    "Causa: " + e.getMessage());
         }
         return listaAgrupaciones;
     }
 
-    private void crearTablasAuxiliares(ArrayList<AgrupacionCitas> listaAgrupaciones){
+    public void crearTablasAuxiliares(ArrayList<AgrupacionCitas> listaAgrupaciones){
         String deleteAgrupacion = "DELETE FROM consultas";
         try {
             conexion.prepareStatement(deleteAgrupacion).execute();
             conexion.prepareStatement(deleteAgrupacion + 2).execute();
             conexion.prepareStatement(deleteAgrupacion + 3).execute();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, "Error al vaciar las tablas auxiliares \n" +
+                    "Causa: " + e.getMessage());
         }
         String query = "";
         for(AgrupacionCitas agrupacion : listaAgrupaciones){

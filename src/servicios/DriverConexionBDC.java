@@ -1,91 +1,113 @@
 package servicios;
 
 import java.sql.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DriverConexionBDC {
 
     private Connection conn;
+    private ResultSet conjuntoDatos;
+    private ResultSet conjuntoPreferenciales;
 
-    private static final Logger LOGGER = Logger.getLogger(AdministradorBDL.class.getName());
+    private static final Logger logger = Logger.getLogger(AdministradorBDL.class.getName());
+    private static final String CLASS_NAME = "com.informix.jdbc.IfxDriver";
+    private static final String URL_INFORMIX = "jdbc:informix-sqli://172.17.130.190:1525/basdat:INFORMIXSERVER=servinte_tcp;user=servintebd;password=servinte2014";
+    private static final int MAX_INTENTOS = 3;
+
 
     public DriverConexionBDC(){
-        conectarseBDInformix();
-        realizarPeticion();
-        peticionPacientesPreferenciales();
+        conjuntoDatos = null;
+        conjuntoPreferenciales = null;
     }
 
-    public void conectarseBDInformix(){
+    public boolean conectarseBDInformix(){
+        boolean exitoso = false;
         try{
-            Class.forName("com.informix.jdbc.IfxDriver");
-            System.out.println("Se cargó el Driver JDBC Informix correctamente");
+            Class.forName(CLASS_NAME);
+            exitoso = true;
+            logger.log(Level.INFO, "Se cargó el Driver JDBC Informix correctamente");
         }catch (Exception e){
-            System.out.println("ERROR: No se pudo cargar el driver de Informix");
+            logger.log(Level.SEVERE,"ERROR: No se pudo cargar el driver de Informix");
             e.printStackTrace();
         }
-        String url = "jdbc:informix-sqli://172.17.130.190:1525/basdat:INFORMIXSERVER=servinte_tcp;user=servintebd;password=servinte2014";
-        try
-        {
-            conn = DriverManager.getConnection(url);
-            System.out.println("Conexión exitosa con la BD informix");
+        if(exitoso == true){
+            try
+            {
+                conn = DriverManager.getConnection(URL_INFORMIX);
+                logger.log(Level.INFO,"Conexión exitosa con la BD informix");
+            }
+            catch (SQLException e)
+            {
+                logger.log(Level.SEVERE, "ERROR: no se ha podido conectar con la BD informix \n" +
+                        "Causa: " + e.getMessage() );
+                e.printStackTrace();
+                exitoso = false;
+            }
         }
-        catch (SQLException e)
-        {
-            System.out.println( "ERROR: no se ha podido conectar" );
-            ;
-            System.out.println("ERROR: " + e.getMessage());
-            e.printStackTrace();
-            return;
-        }
-
+        return exitoso;
     }
 
-    public ResultSet realizarPeticion(){
-        System.out.println("Realizando petición de datos a infromix");
-        ResultSet respuesta = null;
-        String peticion = "SELECT\n" +
-                "abpac.pacide,\n" +
-                "abpac.pacnob,\n" +
-                "abpac.pacn2b,\n" +
-                "abpac.paca1b,\n" +
-                "abpac.paca2b,\n" +
-                "inesp.espnom,\n" +
-                "cncit.citfci,\n" +
-                "cncit.cithor,\n" +
-                "sicia.cianom, \n" +
-                "sicia.ciacod \n" +
-                "FROM\n" +
-                "basdat:informix.abpac abpac \n" +
-                "INNER JOIN basdat:informix.cncit cncit \n" +
-                "ON abpac.pachis = cncit.cithis \n" +
-                "INNER JOIN basdat:informix.inesp inesp \n" +
-                "ON cncit.citesp = inesp.espcod \n" +
-                "INNER JOIN basdat:informix.sicia sicia \n" +
-                "ON cncit.citead = sicia.ciacod \n" +
-                "WHERE\n" +
-                "(cncit.citest = 'P') AND \n" +
-                "(cncit.citfci >= Today);";
-        try{
-            PreparedStatement pstmt = conn.prepareStatement(peticion);
-            respuesta = pstmt.executeQuery();
-            System.out.println("Datos recbidos correctamente");
-            return respuesta;
-        }catch(Exception e){
-            e.printStackTrace();
-            return respuesta;
+    public void realizarPeticionDatos(){
+        int contadorIntentos = 1;
+        boolean exitoso = false;
+        while(contadorIntentos <= MAX_INTENTOS && !exitoso){
+            logger.log(Level.INFO, "Realizando intento #" + contadorIntentos + " de petición de datos a infromix");
+            String peticion = "SELECT\n" +
+                    "abpac.pacide,\n" +
+                    "abpac.pacnob,\n" +
+                    "abpac.pacn2b,\n" +
+                    "abpac.paca1b,\n" +
+                    "abpac.paca2b,\n" +
+                    "inesp.espnom,\n" +
+                    "cncit.citfci,\n" +
+                    "cncit.cithor,\n" +
+                    "sicia.cianom, \n" +
+                    "sicia.ciacod \n" +
+                    "FROM\n" +
+                    "basdat:informix.abpac abpac \n" +
+                    "INNER JOIN basdat:informix.cncit cncit \n" +
+                    "ON abpac.pachis = cncit.cithis \n" +
+                    "INNER JOIN basdat:informix.inesp inesp \n" +
+                    "ON cncit.citesp = inesp.espcod \n" +
+                    "INNER JOIN basdat:informix.sicia sicia \n" +
+                    "ON cncit.citead = sicia.ciacod \n" +
+                    "WHERE\n" +
+                    "(cncit.citest = 'P') AND \n" +
+                    "(cncit.citfci >= Today);";
+            try{
+                PreparedStatement pstmt = conn.prepareStatement(peticion);
+                conjuntoDatos = pstmt.executeQuery();
+                logger.log(Level.INFO,"Datos recbidos correctamente");
+                exitoso = true;
+            }catch(SQLException e){
+                logger.log(Level.WARNING, "Error en la petición de datos a informix");
+                e.printStackTrace();
+            }
+            contadorIntentos++;
         }
-
     }
 
-    public ResultSet peticionPacientesPreferenciales(){
-        ResultSet rta = null;
+    public void peticionPacientesPreferenciales(){
+        boolean exitoso = false;
+        int contadorIntentos = 1;
         String query = "SELECT * FROM basdat:informix.incle incle " +
                 "WHERE (incle.cleest = '0');";
-        try {
-            rta = conn.prepareStatement(query).executeQuery();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        while(!exitoso && contadorIntentos <=3){
+            logger.log(Level.INFO, "Realizando intento #" + contadorIntentos + " de petición de pacientes " +
+                    "preferenciales a infromix");
+            try {
+                conjuntoPreferenciales = conn.prepareStatement(query).executeQuery();
+                logger.log(Level.INFO, "Petición de datos de pacientes preferenciales exitosa");
+                exitoso = true;
+            } catch (SQLException e) {
+                logger.log(Level.WARNING, "Error en la petición de datos de pacientes preferenciales");
+                e.printStackTrace();
+            }
         }
-        return rta;
     }
+
+    public ResultSet getConjuntoDatos(){return conjuntoDatos;}
+
+    public ResultSet getConjuntoPreferenciales(){return conjuntoPreferenciales;}
 }

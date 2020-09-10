@@ -7,6 +7,8 @@ import entidadesAuxiliares.Preferencial;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LectorBDC {
 
@@ -15,16 +17,18 @@ public class LectorBDC {
     private ArrayList<CitaMedica> citasMedicas;
     private ArrayList<Preferencial> preferenciales;
 
+    private static final Logger logger = Logger.getLogger(LectorBDC.class.getName());
+
     public LectorBDC(ResultSet conjuntoDatos, ResultSet conjuntoPreferenciales){
         this.conjuntoDatos = conjuntoDatos;
         this.conjuntoPreferenciales = conjuntoPreferenciales;
         citasMedicas = new ArrayList<>();
         preferenciales = new ArrayList<>();
-        transformarPreferenciales();
     }
 
-    public void transformarDatos(){
-        System.out.println("Transformando datos recibidos");
+    public boolean transformarDatos(){
+        logger.log(Level.INFO,"Transformando datos recibidos");
+        boolean exitoso = true;
         try{
             int contador = 0;
             while(conjuntoDatos.next()){
@@ -38,16 +42,16 @@ public class LectorBDC {
                     String apellido2 = conjuntoDatos.getString("paca2b");
 
                     String nombrePaciente = "";
-                    if(nombre1 != "null" && !nombre1.isEmpty()){
+                    if(nombre1 != null && nombre1 != "null" && !nombre1.isEmpty()){
                         nombrePaciente += nombre1;
                     }
-                    if(nombre2 != "null" && !nombre2.isEmpty()){
+                    if(nombre2 != null && nombre2 != "null" && !nombre2.isEmpty()){
                         nombrePaciente += " " + nombre2;
                     }
-                    if(apellido1 != "null" && !apellido1.isEmpty()){
+                    if(apellido1 != null && apellido1 != "null" && !apellido1.isEmpty()){
                         nombrePaciente += " " + apellido1;
                     }
-                    if(apellido2 != "null" && !apellido2.isEmpty()){
+                    if(apellido2 != null && apellido2 != "null" && !apellido2.isEmpty()){
                         nombrePaciente += " " + apellido2;
                     }
                     long idPaciente = Long.parseLong(strIdPaciente);
@@ -68,17 +72,22 @@ public class LectorBDC {
                     citasMedicas.add(citaMedica);
                     contador++;
                 }catch(Exception e){
-                    e.printStackTrace();
+                    logger.log(Level.WARNING, "Error en la tansformación de datos: " + e.getMessage());
                 }
             }
-            System.out.println("Se transformaron " + citasMedicas.size() + " citas médicas");
-            System.out.println("Se leyeron " + contador + " registros provenientes de informix");
+            logger.log(Level.INFO,"Se transformaron " + citasMedicas.size() + " citas médicas");
+            logger.log(Level.INFO, "Se leyeron " + contador + " registros provenientes de informix");
         }catch(Exception e){
+            logger.log(Level.WARNING, "Error en la tansformación de datos: " + e.getMessage());
             e.printStackTrace();
+            exitoso = false;
         }
+        return exitoso;
     }
 
-    private void transformarPreferenciales(){
+    public boolean transformarPreferenciales(){
+        logger.log(Level.INFO, "Transformando datos de pacientes preferenciales");
+        boolean exitoso = false;
         try{
             while(conjuntoPreferenciales.next()){
                 try{
@@ -87,12 +96,18 @@ public class LectorBDC {
                     Preferencial nuevoPreferencial = new Preferencial(idPaciente);
                     preferenciales.add(nuevoPreferencial);
                 }catch (Exception e){
-                    e.printStackTrace();
+                    logger.log(Level.WARNING, "Error al transformar datos de pacientes preferenciales \n" +
+                            "Causa: " + e.getMessage());
                 }
             }
+            exitoso = true;
+            logger.log(Level.INFO, "Se transformaron los datos de pacientes preferenciales");
         }catch(Exception e){
+            logger.log(Level.SEVERE, "Error al transformar datos de pacientes preferenciales \n" +
+                    "Causa: " + e.getMessage());
             e.printStackTrace();
         }
+        return exitoso;
     }
 
     public ArrayList<CitaMedica> getCitasMedicas(){return citasMedicas;}
