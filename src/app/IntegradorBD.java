@@ -37,9 +37,15 @@ public class IntegradorBD extends Thread{
         this.interfaz = interfaz;
     }
 
+    public void detener(){
+        
+    }
+
     @Override
     public void run() {
-        interfaz.desactivarBoton();
+        super.run();
+        interfaz.botonesCorrer();
+        interfaz.activarBotonesHora(false);
         boolean iniciado = false;
         while(corriendo && !detener){
             //Revision para actualizacion automática
@@ -104,7 +110,8 @@ public class IntegradorBD extends Thread{
                 detener = true;
             }
         }
-        interfaz.activarBoton();
+        interfaz.botonesDetener();
+        interfaz.activarBotonesHora(true);
     }
 
 }

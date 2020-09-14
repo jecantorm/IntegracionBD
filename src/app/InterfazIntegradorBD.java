@@ -1,5 +1,9 @@
 package app;
 
+import interfaz.PanelBotones;
+import interfaz.PanelConsola;
+import interfaz.PanelHoraActualizacion;
+import servicios.VerificadorHora;
 import util.CustomOutputStream;
 
 import javax.swing.*;
@@ -8,60 +12,66 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.PrintStream;
 
-public class InterfazIntegradorBD extends JFrame implements ActionListener {
+public class InterfazIntegradorBD extends JFrame{
 
     private IntegradorBD integradorBD;
-    private PrintStream standardOut;
-    private Button btnCorrer;
+    private VerificadorHora verificadorHora;
 
-    private static final String CORRER = "Correr";
+    private JPanel panelDerecha;
+    private JPanel panelIzquierda;
+    private PanelConsola panelConsola;
+    private PanelBotones panelBotones;
+    private PanelHoraActualizacion panelHoraActualizacion;
 
-    public InterfazIntegradorBD(){
+    public InterfazIntegradorBD() {
         integradorBD = new IntegradorBD(this);
+
         setLayout(new BorderLayout());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(new Dimension(800,200));
+        setSize(new Dimension(800, 200));
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+        panelConsola = new PanelConsola();
 
-        btnCorrer = new Button(CORRER);
-        btnCorrer.setActionCommand(CORRER);
-        btnCorrer.addActionListener(this);
-        panel.add(btnCorrer, BorderLayout.WEST);
+        panelIzquierda = new JPanel();
+        panelIzquierda.setLayout(new BorderLayout());
+        panelBotones = new PanelBotones(this);
+        panelHoraActualizacion = new PanelHoraActualizacion(this);
+        panelIzquierda.add(panelHoraActualizacion, BorderLayout.NORTH);
+        panelIzquierda.add(panelBotones, BorderLayout.SOUTH);
 
-        JTextArea txtLog = new JTextArea(1000, 30);
-        txtLog.setEditable(false);
-        PrintStream printStream = new PrintStream(new CustomOutputStream(txtLog));
-        standardOut = System.out;
-        System.setOut(printStream);
-        System.setErr(printStream);
-        panel.add(new JScrollPane(txtLog), BorderLayout.CENTER);
-        add(panel);
+        add(panelIzquierda, BorderLayout.CENTER);
+        add(panelConsola, BorderLayout.EAST);
         setVisible(true);
+    }
+
+    public void establecerHoraActualizacion(String horaActualización){
+        verificadorHora = new VerificadorHora(horaActualización);
+        verificadorHora.start();
     }
 
     public void correr() {
         integradorBD.start();
     }
 
+    public void activarBotonesHora(boolean activar){
+        panelHoraActualizacion.activarBotones(activar);
+    }
+
+    public void botonesCorrer(){
+        panelBotones.desactivarBotonCorrer();
+        panelBotones.activarBotonDetener();
+    }
+
+    public void botonesDetener(){
+        panelBotones.activarBotonCorrer();
+        panelBotones.desactivarBotonDetener();
+    }
+
+    public void detener() {
+        integradorBD.detener();
+    }
+
     public static void main(String[] args){
         InterfazIntegradorBD intefaz = new InterfazIntegradorBD();
-    }
-
-    public void desactivarBoton(){
-        btnCorrer.setEnabled(false);
-    }
-
-    public void activarBoton(){
-        btnCorrer.setEnabled(true);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String comando = e.getActionCommand();
-        if(comando.equals(CORRER)){
-            correr();
-        }
     }
 }
