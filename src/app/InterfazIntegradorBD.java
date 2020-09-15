@@ -56,6 +56,7 @@ public class InterfazIntegradorBD extends JFrame{
     public void correr() {
         IntegradorBD integradorBD = new IntegradorBD(this);
         integradorBD.start();
+
     }
 
     public void activarCorrer(boolean activar){

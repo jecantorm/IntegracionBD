@@ -77,8 +77,9 @@ public class IntegradorBD extends Thread{
                                         //No se creó la tabla de consultas full
                                         logger.log(Level.INFO,
                                                 "No se guardaron las consultas en postgres");
-                                        detener = true;
                                     }
+                                    detener = true;
+                                    corriendo = false;
                                 }
                             }else{
                                 //No se pudo conectar con postgres
