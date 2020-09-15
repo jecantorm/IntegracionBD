@@ -9,6 +9,7 @@ public class DriverConexionBDC {
     private Connection conn;
     private ResultSet conjuntoDatos;
     private ResultSet conjuntoPreferenciales;
+    private ResultSet conjuntoPacientes;
 
     private static final Logger logger = Logger.getLogger(AdministradorBDL.class.getName());
     private static final String CLASS_NAME = "com.informix.jdbc.IfxDriver";
@@ -90,10 +91,11 @@ public class DriverConexionBDC {
 
     public void peticionPacientesPreferenciales(){
         boolean exitoso = false;
-        int contadorIntentos = 1;
+        int contadorIntentos = 0;
         String query = "SELECT * FROM basdat:informix.incle incle " +
                 "WHERE (incle.cleest = '0');";
         while(!exitoso && contadorIntentos <=3){
+            contadorIntentos++;
             logger.log(Level.INFO, "Realizando intento #" + contadorIntentos + " de petición de pacientes " +
                     "preferenciales a infromix");
             try {
@@ -106,6 +108,26 @@ public class DriverConexionBDC {
             }
         }
     }
+
+    public void peticionPacientes(){
+        String query = "SELECT abpac.pacide, abpac.pacnob " +
+                "FROM basdat:informix.abpac abpac";
+        int contador = 0;
+        boolean exitoso = false;
+        while(contador <= 3 && !exitoso){
+            contador++;
+            logger.log(Level.INFO, "Realizando intento #" + contador + " de petición de pacientes a informix");
+            try {
+                conjuntoPacientes = conn.prepareStatement(query).executeQuery();
+                exitoso = true;
+            } catch (SQLException e) {
+                logger.log(Level.SEVERE, "No fue posible realizar la petición de clientes");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public ResultSet getConjuntoPacientes(){return conjuntoPacientes;}
 
     public ResultSet getConjuntoDatos(){return conjuntoDatos;}
 

@@ -14,16 +14,20 @@ public class LectorBDC {
 
     private ResultSet conjuntoDatos;
     private ResultSet conjuntoPreferenciales;
+    private ResultSet conjuntoPacientes;
     private ArrayList<CitaMedica> citasMedicas;
     private ArrayList<Preferencial> preferenciales;
+    private ArrayList<Paciente> pacientes;
 
     private static final Logger logger = Logger.getLogger(LectorBDC.class.getName());
 
-    public LectorBDC(ResultSet conjuntoDatos, ResultSet conjuntoPreferenciales){
+    public LectorBDC(ResultSet conjuntoDatos, ResultSet conjuntoPreferenciales, ResultSet conjuntoPacientes){
         this.conjuntoDatos = conjuntoDatos;
         this.conjuntoPreferenciales = conjuntoPreferenciales;
+        this.conjuntoPacientes = conjuntoPacientes;
         citasMedicas = new ArrayList<>();
         preferenciales = new ArrayList<>();
+        pacientes = new ArrayList<>();
     }
 
     public boolean transformarDatos(){
@@ -85,6 +89,25 @@ public class LectorBDC {
         return exitoso;
     }
 
+    public boolean transformarPacientes(){
+        boolean exitoso = true;
+        logger.log(Level.INFO, "Transformando datos de pacientes");
+        try{
+            while(conjuntoPacientes.next()){
+                try{
+                    String strIdPaciente = conjuntoPacientes.getString("pacide").trim();
+                    String nombrePaciente = conjuntoDatos.getString("pacnob");
+                    long idPaciente = Long.parseLong(strIdPaciente);
+                    boolean preferencial = esPreferencial(idPaciente);
+                    Paciente nuevo = new Paciente(idPaciente,preferencial,nombrePaciente);
+                }catch (Exception e){
+                    logger.log(Level.WARNING, "Error en la tansformación de datos: " + e.getMessage());
+                }
+            }
+        }catch(Exception e){}
+        return exitoso;
+    }
+
     public boolean transformarPreferenciales(){
         logger.log(Level.INFO, "Transformando datos de pacientes preferenciales");
         boolean exitoso = false;
@@ -111,6 +134,8 @@ public class LectorBDC {
     }
 
     public ArrayList<CitaMedica> getCitasMedicas(){return citasMedicas;}
+
+    public ArrayList<Paciente> getPacientes(){return pacientes;}
 
     private boolean esPreferencial(long idPaciente){
         boolean rta = false;

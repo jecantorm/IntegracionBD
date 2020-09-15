@@ -55,40 +55,48 @@ public class IntegradorBD extends Thread{
                 driverConexionBDC.peticionPacientesPreferenciales();
                 ResultSet conjuntoDatos = driverConexionBDC.getConjuntoDatos();
                 ResultSet conjuntoPreferenciales = driverConexionBDC.getConjuntoPreferenciales();
-                System.out.println(conjuntoDatos == null);
-                System.out.println(conjuntoPreferenciales == null);
-                if(conjuntoDatos != null && conjuntoPreferenciales != null){
-                    LectorBDC lector = new LectorBDC(conjuntoDatos, conjuntoPreferenciales);
+                ResultSet conjuntoPacientes = driverConexionBDC.getConjuntoPacientes();
+                if(conjuntoDatos != null && conjuntoPreferenciales != null && conjuntoPacientes != null){
+                    LectorBDC lector = new LectorBDC(conjuntoDatos, conjuntoPreferenciales, conjuntoPacientes);
                     boolean transformacionPreferenciales = lector.transformarPreferenciales();
                     if(transformacionPreferenciales){
-                        boolean transformacionDatos = lector.transformarDatos();
-                        if(transformacionDatos){
-                            AdministradorBDL administradorBDL = new AdministradorBDL(lector.getCitasMedicas());
-                            boolean conexionPostgres = administradorBDL.conectarseBDPostgres();
-                            if(conexionPostgres){
-                                boolean vaciarTablas = administradorBDL.vaciarTablas();
-                                if(vaciarTablas){
-                                    administradorBDL.guardarDatosBDPostgres();
-                                    boolean tablaConsultasFull = administradorBDL.crearTablaConsultasFull();
-                                    if(tablaConsultasFull){
-                                        ArrayList<AgrupacionCitas> ls = administradorBDL.crearAgrupaciones();
-                                        administradorBDL.crearTablasAuxiliares(ls);
-                                    }else{
-                                        //No se creó la tabla de consultas full
-                                        logger.log(Level.INFO,
-                                                "No se guardaron las consultas en postgres");
+                        boolean transformacionPacientes = lector.transformarPacientes();
+                        if(transformacionPacientes){
+                            boolean transformacionDatos = lector.transformarDatos();
+                            if(transformacionDatos){
+                                AdministradorBDL administradorBDL = new AdministradorBDL(lector.getCitasMedicas(),
+                                        lector.getPacientes());
+                                boolean conexionPostgres = administradorBDL.conectarseBDPostgres();
+                                if(conexionPostgres){
+                                    boolean vaciarTablas = administradorBDL.vaciarTablas();
+                                    if(vaciarTablas){
+                                        administradorBDL.guardarPacientesBDPostgres();
+                                        administradorBDL.guardarDatosBDPostgres();
+                                        boolean tablaConsultasFull = administradorBDL.crearTablaConsultasFull();
+                                        if(tablaConsultasFull){
+                                            ArrayList<AgrupacionCitas> ls = administradorBDL.crearAgrupaciones();
+                                            administradorBDL.crearTablasAuxiliares(ls);
+                                        }else{
+                                            //No se creó la tabla de consultas full
+                                            logger.log(Level.INFO,
+                                                    "No se guardaron las consultas en postgres");
+                                        }
+                                        detener = true;
+                                        corriendo = false;
                                     }
+                                }else{
+                                    //No se pudo conectar con postgres
+                                    logger.log(Level.SEVERE, "No se pudo conectar con postgres");
                                     detener = true;
-                                    corriendo = false;
                                 }
                             }else{
-                                //No se pudo conectar con postgres
-                                logger.log(Level.SEVERE, "No se pudo conectar con postgres");
+                                //No se transformaron los datos
+                                logger.log(Level.SEVERE, "No se transformarons los datos de informmix");
                                 detener = true;
                             }
                         }else{
-                            //No se transformaron los datos
-                            logger.log(Level.SEVERE, "No se transformarons los datos de informmix");
+                            //No se transformaron los pacientes de informix
+                            logger.log(Level.SEVERE, "No se transformarons los pacientes de informmix");
                             detener = true;
                         }
                     }else{
