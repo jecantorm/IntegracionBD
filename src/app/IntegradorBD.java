@@ -44,11 +44,14 @@ public class IntegradorBD extends Thread{
         corriendo = true;
         detener = false;
         interfaz.activarCorrer(false);
-        interfaz.activarPanelHoraActualizacion(false);
+        interfaz.activarPanelHoraActualizacion1(false);
+        interfaz.activarPanelHoraActualizacion2(false);
         boolean iniciado = false;
         while(corriendo && !detener){
             //Revision para actualizacion automática
-
+            System.out.println("**************************");
+            System.out.println("Inició");
+            System.out.println("**************************");
             boolean conexionInformix = false;
             logger.log(Level.INFO, "Conectandose a informix");
             DriverConexionBDC driverConexionBDC = new DriverConexionBDC();
@@ -116,7 +119,8 @@ public class IntegradorBD extends Thread{
             }
         }
         interfaz.activarCorrer(true);
-        interfaz.activarPanelHoraActualizacion(true);
+        interfaz.activarPanelHoraActualizacion1(true);
+        interfaz.activarPanelHoraActualizacion2(true);
     }
 
 }

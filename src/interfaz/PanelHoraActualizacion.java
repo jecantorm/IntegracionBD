@@ -15,15 +15,19 @@ public class PanelHoraActualizacion extends JPanel implements ActionListener {
     private JTextField txtHoraActualizacion;
     private JTextField txtMinutoActualizacion;
     private JButton btnEstablecerHora;
+    private JButton btnDetenerModoAutomatico;
+    private int validador;
 
     private static final String ESTABLECER = "Establecer Hora";
     private static final String DEFAULT_HORA_ACTUALIZACION = "12";
     private static final String DEFAULT_MINUTO_ACTUALIZACION = "00";
+    private static final String DETENER_MODO_AUTOMATICO = "Detener";
 
-    public PanelHoraActualizacion(InterfazIntegradorBD interfaz){
+    public PanelHoraActualizacion(InterfazIntegradorBD interfaz, int validador){
         this.interfaz = interfaz;
-        setBorder(BorderFactory.createTitledBorder("Hora actualización automática"));
-        setLayout(new GridLayout(1,4,0,0));
+        this.validador = validador;
+        setBorder(BorderFactory.createTitledBorder("Hora actualización automática " + validador));
+        setLayout(new GridLayout(1,5,0,0));
 
 
         txtHoraActualizacion = new JTextField(DEFAULT_HORA_ACTUALIZACION);
@@ -54,10 +58,19 @@ public class PanelHoraActualizacion extends JPanel implements ActionListener {
         btnEstablecerHora.setActionCommand(ESTABLECER);
         btnEstablecerHora.addActionListener(this);
 
+        btnDetenerModoAutomatico = new JButton(DETENER_MODO_AUTOMATICO);
+        btnDetenerModoAutomatico.setActionCommand(DETENER_MODO_AUTOMATICO);
+        btnDetenerModoAutomatico.addActionListener(this);
+
+        JLabel lblPuntos = new JLabel(":");
+        lblPuntos.setHorizontalAlignment(SwingConstants.CENTER);
+
         add(txtHoraActualizacion);
-        add(new JLabel(":"));
+        add(lblPuntos);
         add(txtMinutoActualizacion);
         add(btnEstablecerHora);
+        add(btnDetenerModoAutomatico);
+        activarPanel(true);
     }
 
     private String getHoraActualizacion() throws Exception{
@@ -88,22 +101,38 @@ public class PanelHoraActualizacion extends JPanel implements ActionListener {
         btnEstablecerHora.setEnabled(activar);
         txtHoraActualizacion.setEditable(activar);
         txtMinutoActualizacion.setEditable(activar);
+        btnDetenerModoAutomatico.setEnabled(!activar);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String comando = e.getActionCommand();
-        if(comando.equals(ESTABLECER)){
+        if(comando.equals(ESTABLECER) && validador == 1){
             String strHora = "";
             try {
                 strHora = getHoraActualizacion();
                 System.out.println(strHora);
-                interfaz.establecerHoraActualizacion(strHora);
+                interfaz.establecerHoraActualizacion1(strHora);
             } catch (Exception exception) {
                 exception.printStackTrace();
                 JOptionPane.showMessageDialog(this, exception.getMessage(), "ERROR",
                         JOptionPane.ERROR_MESSAGE);
             }
+        }else if(comando.equals(ESTABLECER) && validador == 2){
+            String strHora = "";
+            try {
+                strHora = getHoraActualizacion();
+                System.out.println(strHora);
+                interfaz.establecerHoraActualizacion2(strHora);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                JOptionPane.showMessageDialog(this, exception.getMessage(), "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }else if(comando.equals(DETENER_MODO_AUTOMATICO) && validador == 1){
+            interfaz.detenerModoAutomatico1();
+        }else if(comando.equals(DETENER_MODO_AUTOMATICO) && validador == 2){
+            interfaz.detenerModoAutomatico2();
         }
     }
 }

@@ -7,13 +7,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class VerificadorHora extends Thread{
 
     private Calendar calendarActualizacion;
-    private boolean detener;
+    private final AtomicBoolean corriendo = new AtomicBoolean(false);
     private InterfazIntegradorBD interfaz;
     private String horaActualizacion;
 
@@ -42,27 +43,25 @@ public class VerificadorHora extends Thread{
 
     @Override
     public void run() {
-        detener = false;
-        logger.log(Level.INFO, "Modo automático corriendo");
-        while(!detener){
+        logger.log(Level.INFO, "Modo automático corriendo para hora: " + horaActualizacion);
+        corriendo.set(true);
+        while(corriendo.get()){
             Calendar ahora = Calendar.getInstance();
             ahora.setTime(new Date(System.currentTimeMillis()));
-            boolean actualizacionAutomatica = false;
             int horaActual = ahora.get(Calendar.HOUR_OF_DAY);
             int minutosActual = ahora.get(Calendar.MINUTE);
             int horaActualizacion = calendarActualizacion.get(Calendar.HOUR_OF_DAY);
             int minutosActualizacion = calendarActualizacion.get(Calendar.MINUTE);
-            if(horaActual == horaActualizacion && minutosActual== minutosActualizacion && !actualizacionAutomatica){
-                logger.log(Level.INFO, "Hora de actualización automática");
+            if(horaActual == horaActualizacion && minutosActual== minutosActualizacion){
+                logger.log(Level.INFO, "Comenzando actualización automática");
                 interfaz.correr();
-                actualizacionAutomatica = false;
                 try {
                     sleep(65000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 logger.log(Level.INFO, "Se realizó la actualización automática con éxito");
-                detener = true;
+//                corriendo.set(false);
             }else{
                 try {
                     sleep(5000);
@@ -71,10 +70,10 @@ public class VerificadorHora extends Thread{
                 }
             }
         }
-        interfaz.establecerHoraActualizacion(horaActualizacion);
+        logger.log(Level.INFO, "Deteniendo verificador de hora: " + horaActualizacion);
     }
 
     public void detener(){
-        detener = true;
+        corriendo.set(false);
     }
 }
