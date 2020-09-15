@@ -15,7 +15,7 @@ public class LectorBDC {
     private ResultSet conjuntoDatos;
     private ResultSet conjuntoPreferenciales;
     private ArrayList<CitaMedica> citasMedicas;
-    private ArrayList<Preferencial> preferenciales;
+    private ArrayList<Paciente> pacientesPreferenciales;
 
     private static final Logger logger = Logger.getLogger(LectorBDC.class.getName());
 
@@ -23,7 +23,7 @@ public class LectorBDC {
         this.conjuntoDatos = conjuntoDatos;
         this.conjuntoPreferenciales = conjuntoPreferenciales;
         citasMedicas = new ArrayList<>();
-        preferenciales = new ArrayList<>();
+        pacientesPreferenciales = new ArrayList<>();
     }
 
     public boolean transformarDatos(){
@@ -55,7 +55,7 @@ public class LectorBDC {
                         nombrePaciente += " " + apellido2;
                     }
                     long idPaciente = Long.parseLong(strIdPaciente);
-                    boolean preferencial = esPreferencial(idPaciente);
+                    boolean preferencial = false;
                     Paciente paciente = new Paciente(idPaciente, preferencial, nombrePaciente);
 
                     //Extracción de la información de la compañia
@@ -87,39 +87,47 @@ public class LectorBDC {
 
     public boolean transformarPreferenciales(){
         logger.log(Level.INFO, "Transformando datos de pacientes preferenciales");
-        boolean exitoso = false;
+        boolean exitoso = true;
         try{
             while(conjuntoPreferenciales.next()){
                 try{
-                    String strIdPaciente = conjuntoPreferenciales.getString("cleced");
+                    String strIdPaciente = conjuntoPreferenciales.getString("pacide");
                     long idPaciente = Long.parseLong(strIdPaciente);
-                    Preferencial nuevoPreferencial = new Preferencial(idPaciente);
-                    preferenciales.add(nuevoPreferencial);
+                    String nombre1 = conjuntoPreferenciales.getString("pacnob");
+                    String nombre2 = conjuntoPreferenciales.getString("pacn2b");
+                    String apellido1 = conjuntoPreferenciales.getString("paca1b");
+                    String apellido2 = conjuntoPreferenciales.getString("paca2b");
+                    String nombrePaciente = "";
+                    if(nombre1 != null && nombre1 != "null" && !nombre1.isEmpty()){
+                        nombrePaciente += nombre1;
+                    }
+                    if(nombre2 != null && nombre2 != "null" && !nombre2.isEmpty()){
+                        nombrePaciente += " " + nombre2;
+                    }
+                    if(apellido1 != null && apellido1 != "null" && !apellido1.isEmpty()){
+                        nombrePaciente += " " + apellido1;
+                    }
+                    if(apellido2 != null && apellido2 != "null" && !apellido2.isEmpty()){
+                        nombrePaciente += " " + apellido2;
+                    }
+                    Paciente pacientePreferencial = new Paciente(idPaciente, true, nombrePaciente);
+                    pacientesPreferenciales.add(pacientePreferencial);
                 }catch (Exception e){
-                    logger.log(Level.WARNING, "Error al transformar datos de pacientes preferenciales \n" +
+                    logger.log(Level.WARNING, "Error al transformar datos del paciente preferencial \n" +
                             "Causa: " + e.getMessage());
                 }
             }
-            exitoso = true;
             logger.log(Level.INFO, "Se transformaron los datos de pacientes preferenciales");
         }catch(Exception e){
             logger.log(Level.SEVERE, "Error al transformar datos de pacientes preferenciales \n" +
                     "Causa: " + e.getMessage());
             e.printStackTrace();
+            exitoso = false;
         }
         return exitoso;
     }
 
     public ArrayList<CitaMedica> getCitasMedicas(){return citasMedicas;}
 
-    private boolean esPreferencial(long idPaciente){
-        boolean rta = false;
-        for(int i=0; i < preferenciales.size() && !rta; i++){
-            Preferencial actual = preferenciales.get(i);
-            if(actual.getIdPaciente() == idPaciente){
-                rta = true;
-            }
-        }
-        return rta;
-    }
+    public ArrayList<Paciente> getPacientesPreferenciales(){return pacientesPreferenciales;}
 }

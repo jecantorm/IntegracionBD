@@ -91,7 +91,10 @@ public class DriverConexionBDC {
     public void peticionPacientesPreferenciales(){
         boolean exitoso = false;
         int contadorIntentos = 1;
-        String query = "SELECT * FROM basdat:informix.incle incle " +
+        String query = "SELECT abpac.pacide,abpac.pacnob,abpac.pacn2b,abpac.paca1b,abpac.paca2b" +
+                " FROM basdat:informix.incle incle " +
+                "JOIN basdat:informix.abpac abpac " +
+                "ON incle.cleced = abpac.pacide " +
                 "WHERE (incle.cleest = '0');";
         while(!exitoso && contadorIntentos <=3){
             logger.log(Level.INFO, "Realizando intento #" + contadorIntentos + " de petición de pacientes " +

@@ -1,11 +1,14 @@
 package app;
 
+import entidades.CitaMedica;
+import entidades.Paciente;
 import entidadesAuxiliares.AgrupacionCitas;
 import servicios.AdministradorBDL;
 import servicios.DriverConexionBDC;
 import servicios.LectorBDC;
 import servicios.TransformadorDatos;
 
+import java.sql.Array;
 import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -55,24 +58,29 @@ public class IntegradorBD extends Thread{
                 driverConexionBDC.peticionPacientesPreferenciales();
                 ResultSet conjuntoDatos = driverConexionBDC.getConjuntoDatos();
                 ResultSet conjuntoPreferenciales = driverConexionBDC.getConjuntoPreferenciales();
-                System.out.println(conjuntoDatos == null);
-                System.out.println(conjuntoPreferenciales == null);
                 if(conjuntoDatos != null && conjuntoPreferenciales != null){
                     LectorBDC lector = new LectorBDC(conjuntoDatos, conjuntoPreferenciales);
                     boolean transformacionPreferenciales = lector.transformarPreferenciales();
                     if(transformacionPreferenciales){
                         boolean transformacionDatos = lector.transformarDatos();
                         if(transformacionDatos){
-                            AdministradorBDL administradorBDL = new AdministradorBDL(lector.getCitasMedicas());
+                            ArrayList<CitaMedica> citasMedicas = lector.getCitasMedicas();
+                            ArrayList<Paciente> pacientesPreferenciales = lector.getPacientesPreferenciales();
+                            AdministradorBDL administradorBDL
+                                    = new AdministradorBDL(citasMedicas, pacientesPreferenciales);
                             boolean conexionPostgres = administradorBDL.conectarseBDPostgres();
                             if(conexionPostgres){
                                 boolean vaciarTablas = administradorBDL.vaciarTablas();
                                 if(vaciarTablas){
+                                    administradorBDL.guardarPacientesPreferenciales();
                                     administradorBDL.guardarDatosBDPostgres();
                                     boolean tablaConsultasFull = administradorBDL.crearTablaConsultasFull();
                                     if(tablaConsultasFull){
                                         ArrayList<AgrupacionCitas> ls = administradorBDL.crearAgrupaciones();
                                         administradorBDL.crearTablasAuxiliares(ls);
+                                        System.out.println("**************************");
+                                        System.out.println("Finalizó");
+                                        System.out.println("**************************");
                                     }else{
                                         //No se creó la tabla de consultas full
                                         logger.log(Level.INFO,

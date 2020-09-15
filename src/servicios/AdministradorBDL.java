@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 public class AdministradorBDL {
 
     private ArrayList<CitaMedica> citasMedicas;
+    private ArrayList<Paciente> pacientesPreferenciales;
     private Connection conexion;
 
     private static final String URL = "jdbc:postgresql://localhost:5432/informix";
@@ -25,8 +26,9 @@ public class AdministradorBDL {
     private static final String CONTRASENIA = "12345";
     private final static Logger logger = Logger.getLogger(AdministradorBDL.class.getName());
 
-    public AdministradorBDL(ArrayList<CitaMedica> citasMedicas){
+    public AdministradorBDL(ArrayList<CitaMedica> citasMedicas, ArrayList<Paciente> pacientesPreferenciales){
         this.citasMedicas = citasMedicas;
+        this.pacientesPreferenciales = pacientesPreferenciales;
     }
 
     public boolean conectarseBDPostgres(){
@@ -55,13 +57,39 @@ public class AdministradorBDL {
             conexion.prepareStatement(deleteCitaMedica).execute();
             conexion.prepareStatement(deletePaciente).execute();
             conexion.prepareStatement(deleteSede).execute();
-            conexion.prepareStatement(dropConsultas).execute();
         } catch (SQLException e) {
             logger.log(Level.WARNING, "Error al vaciar las tablas de Postgres\n " +
                     "Causa: " + e.getMessage());
             exitoso = false;
         }
+        try {
+            conexion.prepareStatement(dropConsultas).execute();
+        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+        }
         return exitoso;
+    }
+
+    public void guardarPacientesPreferenciales(){
+        int contador = 0;
+        for(Paciente pacientePreferencial:pacientesPreferenciales){
+            String querySelectPaciente = "SELECT * FROM paciente WHERE id_paciente = '" + pacientePreferencial.getIdPaciente() + "';";
+            String queryInsertPaciente = "INSERT INTO paciente (id_paciente, nombre, preferencial)" +
+                    "VALUES (" + pacientePreferencial.getIdPaciente() + ",'" +
+                    pacientePreferencial.getNombre() + "','" +
+                    pacientePreferencial.isPreferencial() + "');";
+            try {
+                ResultSet rs = conexion.prepareStatement(querySelectPaciente).executeQuery();
+                if(!rs.next()){
+                    conexion.prepareStatement(queryInsertPaciente).execute();
+                }else{
+                    //No se inserta porque ya existe
+                    //System.out.println("El paciente " + paciente.getIdPaciente() + " no se insertó porque ya existe");
+                }
+            } catch (SQLException e) {
+                logger.log(Level.WARNING, "Error al insertar paciente: " + e.getMessage());
+            }
+        }
     }
 
     public void guardarDatosBDPostgres(){
