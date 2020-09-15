@@ -32,20 +32,16 @@ public class IntegradorBD extends Thread{
     private static final String MARCA_LOGGER = "app.IntegradorBD";
 
     public IntegradorBD(InterfazIntegradorBD interfaz) {
-        corriendo = true;
-        detener = false;
         this.interfaz = interfaz;
-    }
-
-    public void detener(){
-        
     }
 
     @Override
     public void run() {
         super.run();
-        interfaz.botonesCorrer();
-        interfaz.activarBotonesHora(false);
+        corriendo = true;
+        detener = false;
+        interfaz.activarCorrer(false);
+        interfaz.activarPanelHoraActualizacion(false);
         boolean iniciado = false;
         while(corriendo && !detener){
             //Revision para actualizacion automática
@@ -110,8 +106,8 @@ public class IntegradorBD extends Thread{
                 detener = true;
             }
         }
-        interfaz.botonesDetener();
-        interfaz.activarBotonesHora(true);
+        interfaz.activarCorrer(true);
+        interfaz.activarPanelHoraActualizacion(true);
     }
 
 }

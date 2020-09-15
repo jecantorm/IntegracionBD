@@ -1,5 +1,9 @@
 package servicios;
 
+import app.IntegradorBD;
+import app.InterfazIntegradorBD;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,29 +14,36 @@ public class VerificadorHora extends Thread{
 
     private Calendar calendarActualizacion;
     private boolean detener;
+    private InterfazIntegradorBD interfaz;
+    private String horaActualizacion;
 
     private static final SimpleDateFormat parser = new SimpleDateFormat("HH:mm");
     private static final Logger logger = Logger.getLogger(VerificadorHora.class.getName());
 
-    public VerificadorHora(String horaActualizacion){
-        try{
-            detener = false;
-            Date dateActuailizacion = parser.parse(horaActualizacion);
-            Calendar calendarActualizacion = Calendar.getInstance();
-            calendarActualizacion.setTime(dateActuailizacion);
-            logger.log(Level.INFO, "Se actualizó la hora de actualización a: " +
-                    calendarActualizacion.get(Calendar.HOUR_OF_DAY) + ":" +
-                    calendarActualizacion.get(Calendar.MINUTE));
-        }
-        catch(Exception e){
-            logger.log(Level.SEVERE, "No se pudo establecer la hora de actualización automática \n" +
-                    "El formato debe ser: HH:mm (ej. 15:30)");
-        }
+    public VerificadorHora(InterfazIntegradorBD interfaz){
+        this.interfaz = interfaz;
     }
+
+    public boolean establecerHoraActualizacion(String horaActualizacion){
+        boolean rta = true;
+        Date dateActuailizacion = null;
+        this.horaActualizacion = horaActualizacion;
+        try {
+            dateActuailizacion = parser.parse(horaActualizacion);
+            calendarActualizacion = Calendar.getInstance();
+            calendarActualizacion.setTime(dateActuailizacion);
+        } catch (ParseException e) {
+            rta = false;
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
 
     @Override
     public void run() {
-        super.run();
+        detener = false;
+        logger.log(Level.INFO, "Modo automático corriendo");
         while(!detener){
             Calendar ahora = Calendar.getInstance();
             ahora.setTime(new Date(System.currentTimeMillis()));
@@ -41,11 +52,26 @@ public class VerificadorHora extends Thread{
             int minutosActual = ahora.get(Calendar.MINUTE);
             int horaActualizacion = calendarActualizacion.get(Calendar.HOUR_OF_DAY);
             int minutosActualizacion = calendarActualizacion.get(Calendar.MINUTE);
-            if(horaActual > horaActualizacion && minutosActual > minutosActualizacion){
-                actualizacionAutomatica = true;
+            if(horaActual == horaActualizacion && minutosActual== minutosActualizacion && !actualizacionAutomatica){
                 logger.log(Level.INFO, "Hora de actualización automática");
+                interfaz.correr();
+                actualizacionAutomatica = false;
+                try {
+                    sleep(65000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                logger.log(Level.INFO, "Se realizó la actualización automática con éxito");
+                detener = true;
+            }else{
+                try {
+                    sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
+        interfaz.establecerHoraActualizacion(horaActualizacion);
     }
 
     public void detener(){
