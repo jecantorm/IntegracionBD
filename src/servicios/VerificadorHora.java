@@ -60,8 +60,6 @@ public class VerificadorHora extends Thread{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                logger.log(Level.INFO, "Se realizó la actualización automática con éxito");
-//                corriendo.set(false);
             }else{
                 try {
                     sleep(5000);

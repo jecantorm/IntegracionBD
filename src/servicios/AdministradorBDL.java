@@ -38,7 +38,7 @@ public class AdministradorBDL {
             conexion = DriverManager.getConnection(URL,
                     USUARIO, CONTRASENIA);
             exitoso = true;
-           logger.log(Level.INFO,"Conectado a la BD local Postgres");
+            logger.log(Level.INFO,"Conectado a la BD local Postgres");
         }catch (Exception e){
             logger.log(Level.SEVERE,"Error al conectarse con Postgres");
             e.printStackTrace();
@@ -209,69 +209,68 @@ public class AdministradorBDL {
         }
         String query = "";
         for(AgrupacionCitas agrupacion : listaAgrupaciones){
-            if(agrupacion.getNumeroCitas() > 1){
-                query = "SELECT * FROM consultasfull WHERE id_paciente = " + agrupacion.getIdPaciente();
-                query += " ORDER BY fecha ASC, hora ASC";
-                try{
-                    ResultSet rs = conexion.prepareStatement(query).executeQuery();
-                    ArrayList<Consulta> listaConsultas = new ArrayList<>();
-                    while(rs.next()){
-                        try{
-                            long idCita = rs.getInt("id_cita");
-                            long idPaciente = rs.getLong("id_paciente");
-                            String nombrePaciente = rs.getString("nombre_paciente");
-                            String nombreSede = rs.getString("nombre_sede");
-                            String especialidad = rs.getString("especialidad");
-                            Date fecha = rs.getDate("fecha");
-                            Time hora = rs.getTime("hora");
-                            Consulta consulta = new Consulta(idCita,idPaciente,nombrePaciente,nombreSede,especialidad,fecha,hora);
-                            listaConsultas.add(consulta);
-                        }catch(Exception e){
-                            e.printStackTrace();
-                        }
-                    }
-                    Consulta consulta = listaConsultas.get(0);
-                    String queryInsert = "INSERT INTO consultas (id_cita, id_paciente, nombre_paciente, nombre_sede, especialidad, fecha, hora) " +
-                            "VALUES (" + consulta.getIdConsulta() + "," + consulta.getIdPaciente()
-                            + ",'" + consulta.getNombrePaciente() + "','" + consulta.getNombreSede() + "','"
-                            + consulta.getEspecialidad() + "','" + consulta.getFecha().toString() + "','"
-                            + consulta.getHora().toString() + "');";
+            query = "SELECT * FROM consultasfull WHERE id_paciente = " + agrupacion.getIdPaciente() +
+                    " ORDER BY fecha ASC, hora ASC";
+            try{
+                ResultSet rs = conexion.prepareStatement(query).executeQuery();
+                ArrayList<Consulta> listaConsultas = new ArrayList<>();
+                while(rs.next()){
                     try{
-                        conexion.prepareStatement(queryInsert).execute();
-                    }catch (SQLException e){
+                        long idCita = rs.getInt("id_cita");
+                        long idPaciente = rs.getLong("id_paciente");
+                        String nombrePaciente = rs.getString("nombre_paciente");
+                        String nombreSede = rs.getString("nombre_sede");
+                        String especialidad = rs.getString("especialidad");
+                        Date fecha = rs.getDate("fecha");
+                        Time hora = rs.getTime("hora");
+                        Consulta consulta = new Consulta(idCita,idPaciente,nombrePaciente,nombreSede,especialidad,fecha,hora);
+                        listaConsultas.add(consulta);
+                    }catch(Exception e){
                         e.printStackTrace();
                     }
-
-                    if(listaConsultas.size() > 1){
-                        Consulta consulta1 = listaConsultas.get(1);
-                        String queryInsert1 = "INSERT INTO consultas2 (id_cita, id_paciente, nombre_paciente, nombre_sede, especialidad, fecha, hora) " +
-                                "VALUES (" + consulta1.getIdConsulta() + "," + consulta1.getIdPaciente()
-                                + ",'" + consulta1.getNombrePaciente() + "','" + consulta1.getNombreSede() + "','"
-                                + consulta1.getEspecialidad() + "','" + consulta1.getFecha().toString() + "','"
-                                + consulta1.getHora().toString() + "');";
-                        try{
-                            conexion.prepareStatement(queryInsert1).execute();
-                        }catch (SQLException e){
-                            e.printStackTrace();
-                        }
-                    }
-                    if(listaConsultas.size() > 2){
-                        Consulta consulta2 = listaConsultas.get(2);
-                        String queryInsert1 = "INSERT INTO consultas3 (id_cita, id_paciente, nombre_paciente, nombre_sede, especialidad, fecha, hora) " +
-                                "VALUES (" + consulta2.getIdConsulta() + "," + consulta2.getIdPaciente()
-                                + " ,'" + consulta2.getNombrePaciente() + "','" + consulta2.getNombreSede() + "','"
-                                + consulta2.getEspecialidad() + "','" + consulta2.getFecha().toString() + "','"
-                                + consulta2.getHora().toString() + "');";
-                        try{
-                            conexion.prepareStatement(queryInsert1).execute();
-                        }catch (SQLException e){
-                            e.printStackTrace();
-                        }
-                    }
+                }
+                Consulta consulta = listaConsultas.get(0);
+                String queryInsert = "INSERT INTO consultas (id_cita, id_paciente, nombre_paciente, nombre_sede, especialidad, fecha, hora) " +
+                        "VALUES (" + consulta.getIdConsulta() + "," + consulta.getIdPaciente()
+                        + ",'" + consulta.getNombrePaciente() + "','" + consulta.getNombreSede() + "','"
+                        + consulta.getEspecialidad() + "','" + consulta.getFecha().toString() + "','"
+                        + consulta.getHora().toString() + "');";
+                try{
+                    conexion.prepareStatement(queryInsert).execute();
                 }catch (SQLException e){
                     e.printStackTrace();
                 }
+
+                if(listaConsultas.size() > 1){
+                    Consulta consulta1 = listaConsultas.get(1);
+                    String queryInsert1 = "INSERT INTO consultas2 (id_cita, id_paciente, nombre_paciente, nombre_sede, especialidad, fecha, hora) " +
+                            "VALUES (" + consulta1.getIdConsulta() + "," + consulta1.getIdPaciente()
+                            + ",'" + consulta1.getNombrePaciente() + "','" + consulta1.getNombreSede() + "','"
+                            + consulta1.getEspecialidad() + "','" + consulta1.getFecha().toString() + "','"
+                            + consulta1.getHora().toString() + "');";
+                    try{
+                        conexion.prepareStatement(queryInsert1).execute();
+                    }catch (SQLException e){
+                        e.printStackTrace();
+                    }
+                }
+                if(listaConsultas.size() > 2){
+                    Consulta consulta2 = listaConsultas.get(2);
+                    String queryInsert1 = "INSERT INTO consultas3 (id_cita, id_paciente, nombre_paciente, nombre_sede, especialidad, fecha, hora) " +
+                            "VALUES (" + consulta2.getIdConsulta() + "," + consulta2.getIdPaciente()
+                            + " ,'" + consulta2.getNombrePaciente() + "','" + consulta2.getNombreSede() + "','"
+                            + consulta2.getEspecialidad() + "','" + consulta2.getFecha().toString() + "','"
+                            + consulta2.getHora().toString() + "');";
+                    try{
+                        conexion.prepareStatement(queryInsert1).execute();
+                    }catch (SQLException e){
+                        e.printStackTrace();
+                    }
+                }
+            }catch (SQLException e){
+                e.printStackTrace();
             }
+
         }
     }
 }

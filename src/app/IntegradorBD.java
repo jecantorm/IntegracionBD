@@ -44,8 +44,6 @@ public class IntegradorBD extends Thread{
         corriendo = true;
         detener = false;
         interfaz.activarCorrer(false);
-        interfaz.activarPanelHoraActualizacion1(false);
-        interfaz.activarPanelHoraActualizacion2(false);
         boolean iniciado = false;
         while(corriendo && !detener){
             //Revision para actualizacion automática
@@ -119,8 +117,8 @@ public class IntegradorBD extends Thread{
             }
         }
         interfaz.activarCorrer(true);
-        interfaz.activarPanelHoraActualizacion1(true);
-        interfaz.activarPanelHoraActualizacion2(true);
+//        interfaz.activarPanelHoraActualizacion1(true);
+//        interfaz.activarPanelHoraActualizacion2(true);
     }
 
 }
