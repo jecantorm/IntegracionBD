@@ -10,10 +10,13 @@ import entidadesAuxiliares.AgrupacionCitas;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.xml.transform.Result;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class AdministradorBDL {
 
@@ -29,6 +32,7 @@ public class AdministradorBDL {
     public AdministradorBDL(ArrayList<CitaMedica> citasMedicas, ArrayList<Paciente> pacientesPreferenciales){
         this.citasMedicas = citasMedicas;
         this.pacientesPreferenciales = pacientesPreferenciales;
+        FileHandler fh;
     }
 
     public boolean conectarseBDPostgres(){

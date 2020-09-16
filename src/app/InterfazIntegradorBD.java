@@ -25,6 +25,7 @@ public class InterfazIntegradorBD extends JFrame{
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(new Dimension(1000, 170));
         setResizable(false);
+        setLocationRelativeTo(null);
 
         panelConsola = new PanelConsola();
 

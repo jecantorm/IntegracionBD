@@ -3,13 +3,16 @@ package servicios;
 import app.IntegradorBD;
 import app.InterfazIntegradorBD;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class VerificadorHora extends Thread{
 
@@ -23,6 +26,18 @@ public class VerificadorHora extends Thread{
 
     public VerificadorHora(InterfazIntegradorBD interfaz){
         this.interfaz = interfaz;
+        FileHandler fh;
+        try {
+            // This block configure the logger with handler and formatter
+            fh = new FileHandler("./log.txt");
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean establecerHoraActualizacion(String horaActualizacion){

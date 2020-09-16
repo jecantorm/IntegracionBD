@@ -8,6 +8,7 @@ import servicios.DriverConexionBDC;
 import servicios.LectorBDC;
 import servicios.TransformadorDatos;
 
+import java.io.IOException;
 import java.sql.Array;
 import java.sql.ResultSet;
 import java.text.ParseException;
@@ -16,8 +17,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class IntegradorBD extends Thread{
 
@@ -41,15 +44,14 @@ public class IntegradorBD extends Thread{
     @Override
     public void run() {
         super.run();
+        logger.log(Level.INFO, "----------------------------------------");
         corriendo = true;
         detener = false;
         interfaz.activarCorrer(false);
         boolean iniciado = false;
         while(corriendo && !detener){
             //Revision para actualizacion automática
-            System.out.println("**************************");
-            System.out.println("Inició");
-            System.out.println("**************************");
+            logger.log(Level.INFO, "SE INICIÓ EL SERVICIO DE ACTUALIZACIÓN");
             boolean conexionInformix = false;
             logger.log(Level.INFO, "Conectandose a informix");
             DriverConexionBDC driverConexionBDC = new DriverConexionBDC();
@@ -79,9 +81,7 @@ public class IntegradorBD extends Thread{
                                     if(tablaConsultasFull){
                                         ArrayList<AgrupacionCitas> ls = administradorBDL.crearAgrupaciones();
                                         administradorBDL.crearTablasAuxiliares(ls);
-                                        System.out.println("**************************");
-                                        System.out.println("Finalizó");
-                                        System.out.println("**************************");
+                                        logger.log(Level.INFO, "FINALIZÓ EL SERVICIO DE ACTUALIZACIÓN");
                                     }else{
                                         //No se creó la tabla de consultas full
                                         logger.log(Level.INFO,
