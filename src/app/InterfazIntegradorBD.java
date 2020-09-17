@@ -7,6 +7,15 @@ import servicios.VerificadorHora;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class InterfazIntegradorBD extends JFrame{
 
@@ -19,8 +28,11 @@ public class InterfazIntegradorBD extends JFrame{
     private VerificadorHora verificadorHora1;
     private VerificadorHora verificadorHora2;
 
-    public InterfazIntegradorBD() {
+    public static final Logger LOGGER = Logger.getLogger("IntegradorBD");
 
+
+    public InterfazIntegradorBD() {
+        configurarLogger();
         setLayout(new BorderLayout());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(new Dimension(1000, 170));
@@ -42,6 +54,23 @@ public class InterfazIntegradorBD extends JFrame{
         add(panelIzquierda, BorderLayout.CENTER);
 //        add(panelConsola, BorderLayout.EAST);
         setVisible(true);
+    }
+
+    private void configurarLogger(){
+        try {
+            Path path = Paths.get("./logs");
+            if(!Files.exists(path)){
+                File file = new File("./logs");
+                file.mkdir();
+            }
+            FileHandler fileHandler = new FileHandler("./logs/integradorBD-log.%u.%g.txt",
+                    1024 * 1024, 10);
+            LOGGER.addHandler(fileHandler);
+            SimpleFormatter sf = new SimpleFormatter();
+            fileHandler.setFormatter(sf);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void establecerHoraActualizacion1(String horaActualización){
@@ -76,10 +105,6 @@ public class InterfazIntegradorBD extends JFrame{
         panelBotones.activarBotonCorrer(activar);
     }
 
-    public static void main(String[] args){
-        InterfazIntegradorBD intefaz = new InterfazIntegradorBD();
-    }
-
     public void detenerModoAutomatico1() {
         verificadorHora1.detener();
         try {
@@ -98,5 +123,9 @@ public class InterfazIntegradorBD extends JFrame{
             e.printStackTrace();
         }
         panelHoraActualizacion2.activarPanel(true);
+    }
+
+    public static void main(String[] args){
+        InterfazIntegradorBD intefaz = new InterfazIntegradorBD();
     }
 }

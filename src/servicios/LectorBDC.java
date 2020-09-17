@@ -1,5 +1,6 @@
 package servicios;
 
+import app.InterfazIntegradorBD;
 import entidades.CitaMedica;
 import entidades.Paciente;
 import entidades.Sede;
@@ -20,7 +21,7 @@ public class LectorBDC {
     private ArrayList<CitaMedica> citasMedicas;
     private ArrayList<Paciente> pacientesPreferenciales;
 
-    private static final Logger logger = Logger.getLogger(LectorBDC.class.getName());
+    private static final Logger logger = InterfazIntegradorBD.LOGGER;
 
     public LectorBDC(ResultSet conjuntoDatos, ResultSet conjuntoPreferenciales){
         this.conjuntoDatos = conjuntoDatos;

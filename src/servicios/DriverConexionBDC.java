@@ -1,5 +1,7 @@
 package servicios;
 
+import app.InterfazIntegradorBD;
+
 import java.io.IOException;
 import java.sql.*;
 import java.util.logging.FileHandler;
@@ -13,7 +15,7 @@ public class DriverConexionBDC {
     private ResultSet conjuntoDatos;
     private ResultSet conjuntoPreferenciales;
 
-    private static final Logger logger = Logger.getLogger(AdministradorBDL.class.getName());
+    private static final Logger logger = InterfazIntegradorBD.LOGGER;
     private static final String CLASS_NAME = "com.informix.jdbc.IfxDriver";
     private static final String URL_INFORMIX = "jdbc:informix-sqli://172.17.130.190:1525/basdat:INFORMIXSERVER=servinte_tcp;user=servintebd;password=servinte2014";
     private static final int MAX_INTENTOS = 3;

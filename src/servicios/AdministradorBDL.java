@@ -1,5 +1,6 @@
 package servicios;
 
+import app.InterfazIntegradorBD;
 import com.informix.jdbcx.IfxConnectionPoolDataSource;
 import entidades.CitaMedica;
 import entidades.Consulta;
@@ -27,7 +28,7 @@ public class AdministradorBDL {
     private static final String URL = "jdbc:postgresql://localhost:5432/informix";
     private static final String USUARIO = "postgres";
     private static final String CONTRASENIA = "12345";
-    private final static Logger logger = Logger.getLogger(AdministradorBDL.class.getName());
+    private static final Logger logger = InterfazIntegradorBD.LOGGER;
 
     public AdministradorBDL(ArrayList<CitaMedica> citasMedicas, ArrayList<Paciente> pacientesPreferenciales){
         this.citasMedicas = citasMedicas;

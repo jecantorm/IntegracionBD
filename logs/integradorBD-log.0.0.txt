@@ -1,0 +1,8 @@
+sep 17, 2020 4:35:12 PM app.IntegradorBD run
+INFORMACIÓN: ----------------------------------------
+sep 17, 2020 4:35:12 PM app.IntegradorBD run
+INFORMACIÓN: SE INICIÓ EL SERVICIO DE ACTUALIZACIÓN
+sep 17, 2020 4:35:12 PM app.IntegradorBD run
+INFORMACIÓN: Conectandose a informix
+sep 17, 2020 4:35:12 PM servicios.DriverConexionBDC conectarseBDInformix
+INFORMACIÓN: Se cargó el Driver JDBC Informix correctamente

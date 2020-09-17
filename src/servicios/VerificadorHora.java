@@ -22,7 +22,7 @@ public class VerificadorHora extends Thread{
     private String horaActualizacion;
 
     private static final SimpleDateFormat parser = new SimpleDateFormat("HH:mm");
-    private static final Logger logger = Logger.getLogger(VerificadorHora.class.getName());
+    private static final Logger logger = InterfazIntegradorBD.LOGGER;
 
     public VerificadorHora(InterfazIntegradorBD interfaz){
         this.interfaz = interfaz;

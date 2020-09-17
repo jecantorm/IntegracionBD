@@ -6,36 +6,20 @@ import entidadesAuxiliares.AgrupacionCitas;
 import servicios.AdministradorBDL;
 import servicios.DriverConexionBDC;
 import servicios.LectorBDC;
-import servicios.TransformadorDatos;
 
-import java.io.IOException;
-import java.sql.Array;
 import java.sql.ResultSet;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Scanner;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 public class IntegradorBD extends Thread{
 
     //Atributos
-    private LectorBDC lectorBDC;
-    private TransformadorDatos transformadorDatos;
-    private AdministradorBDL administradorBDL;
     private boolean corriendo;
     private boolean detener;
     private InterfazIntegradorBD interfaz;
 
-    private static final Logger logger = Logger.getLogger(IntegradorBD.class.getName());
-
-    //Constantes
-    private static final String MARCA_LOGGER = "app.IntegradorBD";
+    private static final Logger logger = InterfazIntegradorBD.LOGGER;
 
     public IntegradorBD(InterfazIntegradorBD interfaz) {
         this.interfaz = interfaz;
