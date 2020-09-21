@@ -26,18 +26,6 @@ public class VerificadorHora extends Thread{
 
     public VerificadorHora(InterfazIntegradorBD interfaz){
         this.interfaz = interfaz;
-        FileHandler fh;
-        try {
-            // This block configure the logger with handler and formatter
-            fh = new FileHandler("./log.txt");
-            logger.addHandler(fh);
-            SimpleFormatter formatter = new SimpleFormatter();
-            fh.setFormatter(formatter);
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public boolean establecerHoraActualizacion(String horaActualizacion){

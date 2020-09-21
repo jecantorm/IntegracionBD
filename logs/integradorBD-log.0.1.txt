@@ -1,8 +1,316 @@
-sep 17, 2020 4:34:41 PM app.IntegradorBD run
-INFORMACIÓN: ----------------------------------------
-sep 17, 2020 4:34:41 PM app.IntegradorBD run
-INFORMACIÓN: SE INICIÓ EL SERVICIO DE ACTUALIZACIÓN
-sep 17, 2020 4:34:41 PM app.IntegradorBD run
-INFORMACIÓN: Conectandose a informix
-sep 17, 2020 4:34:41 PM servicios.DriverConexionBDC conectarseBDInformix
-INFORMACIÓN: Se cargó el Driver JDBC Informix correctamente
+Sep 18, 2020 10:59:50 AM servicios.VerificadorHora run
+INFO: Modo automático corriendo para hora: 12:30
+Sep 18, 2020 10:59:59 AM servicios.VerificadorHora run
+INFO: Modo automático corriendo para hora: 21:00
+Sep 18, 2020 12:30:00 PM servicios.VerificadorHora run
+INFO: Comenzando actualización automática
+Sep 18, 2020 12:30:00 PM app.IntegradorBD run
+INFO: ----------------------------------------
+Sep 18, 2020 12:30:00 PM app.IntegradorBD run
+INFO: SE INICIÓ EL SERVICIO DE ACTUALIZACIÓN
+Sep 18, 2020 12:30:00 PM app.IntegradorBD run
+INFO: Conectandose a informix
+Sep 18, 2020 12:30:00 PM servicios.DriverConexionBDC conectarseBDInformix
+INFO: Se cargó el Driver JDBC Informix correctamente
+Sep 18, 2020 12:30:01 PM servicios.DriverConexionBDC conectarseBDInformix
+INFO: Conexión exitosa con la BD informix
+Sep 18, 2020 12:30:01 PM servicios.DriverConexionBDC realizarPeticionDatos
+INFO: Realizando intento #1 de petición de datos a infromix
+Sep 18, 2020 12:30:03 PM servicios.DriverConexionBDC realizarPeticionDatos
+INFO: Datos recbidos correctamente
+Sep 18, 2020 12:30:03 PM servicios.DriverConexionBDC peticionPacientesPreferenciales
+INFO: Realizando intento #1 de petición de pacientes preferenciales a infromix
+Sep 18, 2020 12:30:15 PM servicios.DriverConexionBDC peticionPacientesPreferenciales
+INFO: Petición de datos de pacientes preferenciales exitosa
+Sep 18, 2020 12:30:15 PM servicios.LectorBDC transformarPreferenciales
+INFO: Transformando datos de pacientes preferenciales
+Sep 18, 2020 12:30:21 PM servicios.LectorBDC transformarPreferenciales
+WARNING: Error al transformar datos del paciente preferencial 
+Causa: For input string: "23262545 "
+Sep 18, 2020 12:30:21 PM servicios.LectorBDC transformarPreferenciales
+INFO: Se transformaron los datos de pacientes preferenciales
+Sep 18, 2020 12:30:21 PM servicios.LectorBDC transformarDatos
+INFO: Transformando datos recibidos
+Sep 18, 2020 12:31:06 PM servicios.LectorBDC transformarDatos
+INFO: Se transformaron 2614 citas médicas
+Sep 18, 2020 12:31:06 PM servicios.LectorBDC transformarDatos
+INFO: Se leyeron 2614 registros provenientes de informix
+Sep 18, 2020 12:31:06 PM servicios.AdministradorBDL conectarseBDPostgres
+INFO: Conectado a la BD local Postgres
+Sep 18, 2020 12:31:15 PM servicios.AdministradorBDL guardarDatosBDPostgres
+INFO: Citas médicas recibidas de informix: 2614
+Citas médicas guardadas en Postgres: 2614
+Sep 18, 2020 12:31:15 PM servicios.AdministradorBDL crearTablaConsultasFull
+INFO: Creando tabla de consultas completa
+Sep 18, 2020 12:31:15 PM servicios.AdministradorBDL crearTablaConsultasFull
+INFO: Se creó la tabla consultasfull en Postgres
+Sep 18, 2020 12:31:18 PM app.IntegradorBD run
+INFO: FINALIZÓ EL SERVICIO DE ACTUALIZACIÓN
+Sep 18, 2020 9:00:03 PM servicios.VerificadorHora run
+INFO: Comenzando actualización automática
+Sep 18, 2020 9:00:03 PM app.IntegradorBD run
+INFO: ----------------------------------------
+Sep 18, 2020 9:00:03 PM app.IntegradorBD run
+INFO: SE INICIÓ EL SERVICIO DE ACTUALIZACIÓN
+Sep 18, 2020 9:00:03 PM app.IntegradorBD run
+INFO: Conectandose a informix
+Sep 18, 2020 9:00:03 PM servicios.DriverConexionBDC conectarseBDInformix
+INFO: Se cargó el Driver JDBC Informix correctamente
+Sep 18, 2020 9:00:03 PM servicios.DriverConexionBDC conectarseBDInformix
+INFO: Conexión exitosa con la BD informix
+Sep 18, 2020 9:00:03 PM servicios.DriverConexionBDC realizarPeticionDatos
+INFO: Realizando intento #1 de petición de datos a infromix
+Sep 18, 2020 9:00:05 PM servicios.DriverConexionBDC realizarPeticionDatos
+INFO: Datos recbidos correctamente
+Sep 18, 2020 9:00:05 PM servicios.DriverConexionBDC peticionPacientesPreferenciales
+INFO: Realizando intento #1 de petición de pacientes preferenciales a infromix
+Sep 18, 2020 9:00:09 PM servicios.DriverConexionBDC peticionPacientesPreferenciales
+INFO: Petición de datos de pacientes preferenciales exitosa
+Sep 18, 2020 9:00:09 PM servicios.LectorBDC transformarPreferenciales
+INFO: Transformando datos de pacientes preferenciales
+Sep 18, 2020 9:00:19 PM servicios.LectorBDC transformarPreferenciales
+WARNING: Error al transformar datos del paciente preferencial 
+Causa: For input string: "23262545 "
+Sep 18, 2020 9:00:21 PM servicios.LectorBDC transformarPreferenciales
+INFO: Se transformaron los datos de pacientes preferenciales
+Sep 18, 2020 9:00:21 PM servicios.LectorBDC transformarDatos
+INFO: Transformando datos recibidos
+Sep 18, 2020 9:01:13 PM servicios.LectorBDC transformarDatos
+INFO: Se transformaron 2614 citas médicas
+Sep 18, 2020 9:01:13 PM servicios.LectorBDC transformarDatos
+INFO: Se leyeron 2614 registros provenientes de informix
+Sep 18, 2020 9:01:13 PM servicios.AdministradorBDL conectarseBDPostgres
+INFO: Conectado a la BD local Postgres
+Sep 18, 2020 9:01:20 PM servicios.AdministradorBDL guardarDatosBDPostgres
+INFO: Citas médicas recibidas de informix: 2614
+Citas médicas guardadas en Postgres: 2614
+Sep 18, 2020 9:01:20 PM servicios.AdministradorBDL crearTablaConsultasFull
+INFO: Creando tabla de consultas completa
+Sep 18, 2020 9:01:20 PM servicios.AdministradorBDL crearTablaConsultasFull
+INFO: Se creó la tabla consultasfull en Postgres
+Sep 18, 2020 9:01:21 PM app.IntegradorBD run
+INFO: FINALIZÓ EL SERVICIO DE ACTUALIZACIÓN
+Sep 19, 2020 12:30:04 PM servicios.VerificadorHora run
+INFO: Comenzando actualización automática
+Sep 19, 2020 12:30:04 PM app.IntegradorBD run
+INFO: ----------------------------------------
+Sep 19, 2020 12:30:04 PM app.IntegradorBD run
+INFO: SE INICIÓ EL SERVICIO DE ACTUALIZACIÓN
+Sep 19, 2020 12:30:04 PM app.IntegradorBD run
+INFO: Conectandose a informix
+Sep 19, 2020 12:30:04 PM servicios.DriverConexionBDC conectarseBDInformix
+INFO: Se cargó el Driver JDBC Informix correctamente
+Sep 19, 2020 12:30:04 PM servicios.DriverConexionBDC conectarseBDInformix
+INFO: Conexión exitosa con la BD informix
+Sep 19, 2020 12:30:04 PM servicios.DriverConexionBDC realizarPeticionDatos
+INFO: Realizando intento #1 de petición de datos a infromix
+Sep 19, 2020 12:30:06 PM servicios.DriverConexionBDC realizarPeticionDatos
+INFO: Datos recbidos correctamente
+Sep 19, 2020 12:30:06 PM servicios.DriverConexionBDC peticionPacientesPreferenciales
+INFO: Realizando intento #1 de petición de pacientes preferenciales a infromix
+Sep 19, 2020 12:30:11 PM servicios.DriverConexionBDC peticionPacientesPreferenciales
+INFO: Petición de datos de pacientes preferenciales exitosa
+Sep 19, 2020 12:30:11 PM servicios.LectorBDC transformarPreferenciales
+INFO: Transformando datos de pacientes preferenciales
+Sep 19, 2020 12:30:20 PM servicios.LectorBDC transformarPreferenciales
+WARNING: Error al transformar datos del paciente preferencial 
+Causa: For input string: "23262545 "
+Sep 19, 2020 12:30:25 PM servicios.LectorBDC transformarPreferenciales
+INFO: Se transformaron los datos de pacientes preferenciales
+Sep 19, 2020 12:30:25 PM servicios.LectorBDC transformarDatos
+INFO: Transformando datos recibidos
+Sep 19, 2020 12:30:59 PM servicios.LectorBDC transformarDatos
+INFO: Se transformaron 2419 citas médicas
+Sep 19, 2020 12:30:59 PM servicios.LectorBDC transformarDatos
+INFO: Se leyeron 2419 registros provenientes de informix
+Sep 19, 2020 12:30:59 PM servicios.AdministradorBDL conectarseBDPostgres
+INFO: Conectado a la BD local Postgres
+Sep 19, 2020 12:31:05 PM servicios.AdministradorBDL guardarDatosBDPostgres
+INFO: Citas médicas recibidas de informix: 2419
+Citas médicas guardadas en Postgres: 2419
+Sep 19, 2020 12:31:05 PM servicios.AdministradorBDL crearTablaConsultasFull
+INFO: Creando tabla de consultas completa
+Sep 19, 2020 12:31:05 PM servicios.AdministradorBDL crearTablaConsultasFull
+INFO: Se creó la tabla consultasfull en Postgres
+Sep 19, 2020 12:31:07 PM app.IntegradorBD run
+INFO: FINALIZÓ EL SERVICIO DE ACTUALIZACIÓN
+Sep 19, 2020 9:00:01 PM servicios.VerificadorHora run
+INFO: Comenzando actualización automática
+Sep 19, 2020 9:00:01 PM app.IntegradorBD run
+INFO: ----------------------------------------
+Sep 19, 2020 9:00:01 PM app.IntegradorBD run
+INFO: SE INICIÓ EL SERVICIO DE ACTUALIZACIÓN
+Sep 19, 2020 9:00:01 PM app.IntegradorBD run
+INFO: Conectandose a informix
+Sep 19, 2020 9:00:01 PM servicios.DriverConexionBDC conectarseBDInformix
+INFO: Se cargó el Driver JDBC Informix correctamente
+Sep 19, 2020 9:00:01 PM servicios.DriverConexionBDC conectarseBDInformix
+INFO: Conexión exitosa con la BD informix
+Sep 19, 2020 9:00:01 PM servicios.DriverConexionBDC realizarPeticionDatos
+INFO: Realizando intento #1 de petición de datos a infromix
+Sep 19, 2020 9:00:02 PM servicios.DriverConexionBDC realizarPeticionDatos
+INFO: Datos recbidos correctamente
+Sep 19, 2020 9:00:02 PM servicios.DriverConexionBDC peticionPacientesPreferenciales
+INFO: Realizando intento #1 de petición de pacientes preferenciales a infromix
+Sep 19, 2020 9:00:20 PM servicios.DriverConexionBDC peticionPacientesPreferenciales
+INFO: Petición de datos de pacientes preferenciales exitosa
+Sep 19, 2020 9:00:20 PM servicios.LectorBDC transformarPreferenciales
+INFO: Transformando datos de pacientes preferenciales
+Sep 19, 2020 9:00:21 PM servicios.LectorBDC transformarPreferenciales
+WARNING: Error al transformar datos del paciente preferencial 
+Causa: For input string: "23262545 "
+Sep 19, 2020 9:00:22 PM servicios.LectorBDC transformarPreferenciales
+INFO: Se transformaron los datos de pacientes preferenciales
+Sep 19, 2020 9:00:22 PM servicios.LectorBDC transformarDatos
+INFO: Transformando datos recibidos
+Sep 19, 2020 9:01:08 PM servicios.LectorBDC transformarDatos
+INFO: Se transformaron 2419 citas médicas
+Sep 19, 2020 9:01:08 PM servicios.LectorBDC transformarDatos
+INFO: Se leyeron 2419 registros provenientes de informix
+Sep 19, 2020 9:01:09 PM servicios.AdministradorBDL conectarseBDPostgres
+INFO: Conectado a la BD local Postgres
+Sep 19, 2020 9:01:15 PM servicios.AdministradorBDL guardarDatosBDPostgres
+INFO: Citas médicas recibidas de informix: 2419
+Citas médicas guardadas en Postgres: 2419
+Sep 19, 2020 9:01:15 PM servicios.AdministradorBDL crearTablaConsultasFull
+INFO: Creando tabla de consultas completa
+Sep 19, 2020 9:01:15 PM servicios.AdministradorBDL crearTablaConsultasFull
+INFO: Se creó la tabla consultasfull en Postgres
+Sep 19, 2020 9:01:16 PM app.IntegradorBD run
+INFO: FINALIZÓ EL SERVICIO DE ACTUALIZACIÓN
+Sep 20, 2020 12:30:02 PM servicios.VerificadorHora run
+INFO: Comenzando actualización automática
+Sep 20, 2020 12:30:02 PM app.IntegradorBD run
+INFO: ----------------------------------------
+Sep 20, 2020 12:30:02 PM app.IntegradorBD run
+INFO: SE INICIÓ EL SERVICIO DE ACTUALIZACIÓN
+Sep 20, 2020 12:30:02 PM app.IntegradorBD run
+INFO: Conectandose a informix
+Sep 20, 2020 12:30:02 PM servicios.DriverConexionBDC conectarseBDInformix
+INFO: Se cargó el Driver JDBC Informix correctamente
+Sep 20, 2020 12:30:02 PM servicios.DriverConexionBDC conectarseBDInformix
+INFO: Conexión exitosa con la BD informix
+Sep 20, 2020 12:30:02 PM servicios.DriverConexionBDC realizarPeticionDatos
+INFO: Realizando intento #1 de petición de datos a infromix
+Sep 20, 2020 12:30:04 PM servicios.DriverConexionBDC realizarPeticionDatos
+INFO: Datos recbidos correctamente
+Sep 20, 2020 12:30:04 PM servicios.DriverConexionBDC peticionPacientesPreferenciales
+INFO: Realizando intento #1 de petición de pacientes preferenciales a infromix
+Sep 20, 2020 12:30:07 PM servicios.DriverConexionBDC peticionPacientesPreferenciales
+INFO: Petición de datos de pacientes preferenciales exitosa
+Sep 20, 2020 12:30:07 PM servicios.LectorBDC transformarPreferenciales
+INFO: Transformando datos de pacientes preferenciales
+Sep 20, 2020 12:30:15 PM servicios.LectorBDC transformarPreferenciales
+WARNING: Error al transformar datos del paciente preferencial 
+Causa: For input string: "23262545 "
+Sep 20, 2020 12:30:19 PM servicios.LectorBDC transformarPreferenciales
+INFO: Se transformaron los datos de pacientes preferenciales
+Sep 20, 2020 12:30:19 PM servicios.LectorBDC transformarDatos
+INFO: Transformando datos recibidos
+Sep 20, 2020 12:30:57 PM servicios.LectorBDC transformarDatos
+INFO: Se transformaron 2379 citas médicas
+Sep 20, 2020 12:30:57 PM servicios.LectorBDC transformarDatos
+INFO: Se leyeron 2379 registros provenientes de informix
+Sep 20, 2020 12:30:57 PM servicios.AdministradorBDL conectarseBDPostgres
+INFO: Conectado a la BD local Postgres
+Sep 20, 2020 12:31:03 PM servicios.AdministradorBDL guardarDatosBDPostgres
+INFO: Citas médicas recibidas de informix: 2379
+Citas médicas guardadas en Postgres: 2379
+Sep 20, 2020 12:31:03 PM servicios.AdministradorBDL crearTablaConsultasFull
+INFO: Creando tabla de consultas completa
+Sep 20, 2020 12:31:03 PM servicios.AdministradorBDL crearTablaConsultasFull
+INFO: Se creó la tabla consultasfull en Postgres
+Sep 20, 2020 12:31:04 PM app.IntegradorBD run
+INFO: FINALIZÓ EL SERVICIO DE ACTUALIZACIÓN
+Sep 20, 2020 9:00:00 PM servicios.VerificadorHora run
+INFO: Comenzando actualización automática
+Sep 20, 2020 9:00:00 PM app.IntegradorBD run
+INFO: ----------------------------------------
+Sep 20, 2020 9:00:00 PM app.IntegradorBD run
+INFO: SE INICIÓ EL SERVICIO DE ACTUALIZACIÓN
+Sep 20, 2020 9:00:00 PM app.IntegradorBD run
+INFO: Conectandose a informix
+Sep 20, 2020 9:00:00 PM servicios.DriverConexionBDC conectarseBDInformix
+INFO: Se cargó el Driver JDBC Informix correctamente
+Sep 20, 2020 9:00:00 PM servicios.DriverConexionBDC conectarseBDInformix
+INFO: Conexión exitosa con la BD informix
+Sep 20, 2020 9:00:00 PM servicios.DriverConexionBDC realizarPeticionDatos
+INFO: Realizando intento #1 de petición de datos a infromix
+Sep 20, 2020 9:00:02 PM servicios.DriverConexionBDC realizarPeticionDatos
+INFO: Datos recbidos correctamente
+Sep 20, 2020 9:00:02 PM servicios.DriverConexionBDC peticionPacientesPreferenciales
+INFO: Realizando intento #1 de petición de pacientes preferenciales a infromix
+Sep 20, 2020 9:00:10 PM servicios.DriverConexionBDC peticionPacientesPreferenciales
+INFO: Petición de datos de pacientes preferenciales exitosa
+Sep 20, 2020 9:00:10 PM servicios.LectorBDC transformarPreferenciales
+INFO: Transformando datos de pacientes preferenciales
+Sep 20, 2020 9:00:14 PM servicios.LectorBDC transformarPreferenciales
+WARNING: Error al transformar datos del paciente preferencial 
+Causa: For input string: "23262545 "
+Sep 20, 2020 9:00:14 PM servicios.LectorBDC transformarPreferenciales
+INFO: Se transformaron los datos de pacientes preferenciales
+Sep 20, 2020 9:00:14 PM servicios.LectorBDC transformarDatos
+INFO: Transformando datos recibidos
+Sep 20, 2020 9:00:58 PM servicios.LectorBDC transformarDatos
+INFO: Se transformaron 2379 citas médicas
+Sep 20, 2020 9:00:58 PM servicios.LectorBDC transformarDatos
+INFO: Se leyeron 2379 registros provenientes de informix
+Sep 20, 2020 9:00:58 PM servicios.AdministradorBDL conectarseBDPostgres
+INFO: Conectado a la BD local Postgres
+Sep 20, 2020 9:01:04 PM servicios.AdministradorBDL guardarDatosBDPostgres
+INFO: Citas médicas recibidas de informix: 2379
+Citas médicas guardadas en Postgres: 2379
+Sep 20, 2020 9:01:04 PM servicios.AdministradorBDL crearTablaConsultasFull
+INFO: Creando tabla de consultas completa
+Sep 20, 2020 9:01:04 PM servicios.AdministradorBDL crearTablaConsultasFull
+INFO: Se creó la tabla consultasfull en Postgres
+Sep 20, 2020 9:01:05 PM app.IntegradorBD run
+INFO: FINALIZÓ EL SERVICIO DE ACTUALIZACIÓN
+Sep 21, 2020 12:30:01 PM servicios.VerificadorHora run
+INFO: Comenzando actualización automática
+Sep 21, 2020 12:30:01 PM app.IntegradorBD run
+INFO: ----------------------------------------
+Sep 21, 2020 12:30:01 PM app.IntegradorBD run
+INFO: SE INICIÓ EL SERVICIO DE ACTUALIZACIÓN
+Sep 21, 2020 12:30:01 PM app.IntegradorBD run
+INFO: Conectandose a informix
+Sep 21, 2020 12:30:01 PM servicios.DriverConexionBDC conectarseBDInformix
+INFO: Se cargó el Driver JDBC Informix correctamente
+Sep 21, 2020 12:30:01 PM servicios.DriverConexionBDC conectarseBDInformix
+INFO: Conexión exitosa con la BD informix
+Sep 21, 2020 12:30:01 PM servicios.DriverConexionBDC realizarPeticionDatos
+INFO: Realizando intento #1 de petición de datos a infromix
+Sep 21, 2020 12:30:02 PM servicios.DriverConexionBDC realizarPeticionDatos
+INFO: Datos recbidos correctamente
+Sep 21, 2020 12:30:02 PM servicios.DriverConexionBDC peticionPacientesPreferenciales
+INFO: Realizando intento #1 de petición de pacientes preferenciales a infromix
+Sep 21, 2020 12:30:06 PM servicios.DriverConexionBDC peticionPacientesPreferenciales
+INFO: Petición de datos de pacientes preferenciales exitosa
+Sep 21, 2020 12:30:06 PM servicios.LectorBDC transformarPreferenciales
+INFO: Transformando datos de pacientes preferenciales
+Sep 21, 2020 12:30:13 PM servicios.LectorBDC transformarPreferenciales
+WARNING: Error al transformar datos del paciente preferencial 
+Causa: For input string: "23262545 "
+Sep 21, 2020 12:30:15 PM servicios.LectorBDC transformarPreferenciales
+INFO: Se transformaron los datos de pacientes preferenciales
+Sep 21, 2020 12:30:15 PM servicios.LectorBDC transformarDatos
+INFO: Transformando datos recibidos
+Sep 21, 2020 12:30:48 PM servicios.LectorBDC transformarDatos
+INFO: Se transformaron 2379 citas médicas
+Sep 21, 2020 12:30:48 PM servicios.LectorBDC transformarDatos
+INFO: Se leyeron 2379 registros provenientes de informix
+Sep 21, 2020 12:30:48 PM servicios.AdministradorBDL conectarseBDPostgres
+INFO: Conectado a la BD local Postgres
+Sep 21, 2020 12:30:55 PM servicios.AdministradorBDL guardarDatosBDPostgres
+INFO: Citas médicas recibidas de informix: 2379
+Citas médicas guardadas en Postgres: 2379
+Sep 21, 2020 12:30:55 PM servicios.AdministradorBDL crearTablaConsultasFull
+INFO: Creando tabla de consultas completa
+Sep 21, 2020 12:30:55 PM servicios.AdministradorBDL crearTablaConsultasFull
+INFO: Se creó la tabla consultasfull en Postgres
+Sep 21, 2020 12:30:56 PM app.IntegradorBD run
+INFO: FINALIZÓ EL SERVICIO DE ACTUALIZACIÓN
+Sep 21, 2020 2:53:52 PM servicios.VerificadorHora run
+INFO: Deteniendo verificador de hora: 12:30
+Sep 21, 2020 2:54:01 PM servicios.VerificadorHora run
+INFO: Modo automático corriendo para hora: 21:00
