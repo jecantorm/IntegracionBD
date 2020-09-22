@@ -1,0 +1,31 @@
+2020-09-21 16:05:06,707 DEBUG - Starting WinSW in console mode
+2020-09-21 16:05:08,887 DEBUG - Starting WinSW in console mode
+2020-09-21 16:05:09,221 INFO  - Installing the service with id 'testservice'
+2020-09-21 16:05:09,236 DEBUG - Completed. Exit code is 0
+2020-09-21 16:05:14,803 DEBUG - Starting WinSW in console mode
+2020-09-21 16:05:15,130 DEBUG - User requested the status of the process with id 'testservice'
+2020-09-21 16:05:15,132 DEBUG - Completed. Exit code is 0
+2020-09-21 16:05:19,158 DEBUG - Starting WinSW in console mode
+2020-09-21 16:05:20,765 DEBUG - Starting WinSW in console mode
+2020-09-21 16:05:21,094 INFO  - Starting the service with id 'testservice'
+2020-09-21 16:05:21,478 DEBUG - Starting WinSW in service mode
+2020-09-21 16:05:21,493 DEBUG - Completed. Exit code is 0
+2020-09-21 16:05:21,501 INFO  - Starting java -jar "C:\Users\viejo\Documents\Development\IntegracionBD\test\IntegracionBD.jar"
+2020-09-21 16:05:21,528 INFO  - Started process 21732
+2020-09-21 16:05:21,538 DEBUG - Forwarding logs of the process System.Diagnostics.Process (java) to WinSW.SizeBasedRollingLogAppender
+2020-09-21 16:30:10,683 DEBUG - Starting WinSW in console mode
+2020-09-21 16:30:12,852 DEBUG - Starting WinSW in console mode
+2020-09-21 16:30:13,200 INFO  - Stopping the service with id 'testservice'
+2020-09-21 16:30:13,216 INFO  - Stopping testservice
+2020-09-21 16:30:13,217 DEBUG - ProcessKill 21732
+2020-09-21 16:30:13,353 INFO  - Found child process: 22312 Name: conhost.exe
+2020-09-21 16:30:13,442 INFO  - Stopping process 22312
+2020-09-21 16:30:13,466 WARN  - Failed to attach to console. The process does not have a console.
+2020-09-21 16:30:13,471 INFO  - Stopping process 21732
+2020-09-21 16:30:13,483 WARN  - Failed to attach to console. No hay ningún proceso en el otro extremo de la canalización
+2020-09-21 16:30:13,486 INFO  - Finished testservice
+2020-09-21 16:30:13,487 DEBUG - Completed. Exit code is 0
+2020-09-21 16:30:21,309 DEBUG - Starting WinSW in console mode
+2020-09-21 16:30:23,484 DEBUG - Starting WinSW in console mode
+2020-09-21 16:30:23,817 INFO  - Uninstalling the service with id 'testservice'
+2020-09-21 16:30:23,825 DEBUG - Completed. Exit code is 0

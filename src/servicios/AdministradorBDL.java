@@ -1,23 +1,16 @@
 package servicios;
 
-import app.InterfazIntegradorBD;
-import com.informix.jdbcx.IfxConnectionPoolDataSource;
 import entidades.CitaMedica;
 import entidades.Consulta;
 import entidades.Paciente;
 import entidades.Sede;
 import entidadesAuxiliares.AgrupacionCitas;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.xml.transform.Result;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 public class AdministradorBDL {
 
@@ -28,7 +21,7 @@ public class AdministradorBDL {
     private static final String URL = "jdbc:postgresql://localhost:5432/informix";
     private static final String USUARIO = "postgres";
     private static final String CONTRASENIA = "12345";
-    private static final Logger logger = InterfazIntegradorBD.LOGGER;
+    public static final Logger logger = Logger.getRootLogger();
 
     public AdministradorBDL(ArrayList<CitaMedica> citasMedicas, ArrayList<Paciente> pacientesPreferenciales){
         this.citasMedicas = citasMedicas;
@@ -45,7 +38,7 @@ public class AdministradorBDL {
             exitoso = true;
             logger.log(Level.INFO,"Conectado a la BD local Postgres");
         }catch (Exception e){
-            logger.log(Level.SEVERE,"Error al conectarse con Postgres");
+            logger.log(Level.FATAL,"Error al conectarse con Postgres");
             e.printStackTrace();
             exitoso = false;
         }
@@ -63,7 +56,7 @@ public class AdministradorBDL {
             conexion.prepareStatement(deletePaciente).execute();
             conexion.prepareStatement(deleteSede).execute();
         } catch (SQLException e) {
-            logger.log(Level.WARNING, "Error al vaciar las tablas de Postgres\n " +
+            logger.log(Level.WARN, "Error al vaciar las tablas de Postgres\n " +
                     "Causa: " + e.getMessage());
             exitoso = false;
         }
@@ -92,7 +85,7 @@ public class AdministradorBDL {
                     //System.out.println("El paciente " + paciente.getIdPaciente() + " no se insertó porque ya existe");
                 }
             } catch (SQLException e) {
-                logger.log(Level.WARNING, "Error al insertar paciente: " + e.getMessage());
+                logger.log(Level.WARN, "Error al insertar paciente: " + e.getMessage());
             }
         }
     }
@@ -114,7 +107,7 @@ public class AdministradorBDL {
                     //System.out.println("La sede " + sede.getNombre() + " no se insertó porque ya existe");
                 }
             } catch (SQLException e) {
-                logger.log(Level.WARNING, "Error al insertar sede: " + e.getMessage());
+                logger.log(Level.WARN, "Error al insertar sede: " + e.getMessage());
             }
 
             //Inserción de pacientes
@@ -131,7 +124,7 @@ public class AdministradorBDL {
                     //System.out.println("El paciente " + paciente.getIdPaciente() + " no se insertó porque ya existe");
                 }
             } catch (SQLException e) {
-                logger.log(Level.WARNING, "Error al insertar paciente: " + e.getMessage());
+                logger.log(Level.WARN, "Error al insertar paciente: " + e.getMessage());
             }
 
             //Inserción de citas médicas
@@ -152,7 +145,7 @@ public class AdministradorBDL {
                     //System.out.println("La cita " + citaMedica.getIdCita() + " no se insertó porque ya existe");
                 }
             } catch (SQLException e) {
-                logger.log(Level.WARNING,"Error al insertar cita: " + e.getMessage());
+                logger.log(Level.WARN,"Error al insertar cita: " + e.getMessage());
             }
         }
         logger.log(Level.INFO, "Citas médicas recibidas de informix: " + citasMedicas.size() + "\n" +
@@ -171,7 +164,7 @@ public class AdministradorBDL {
             conexion.prepareStatement(queryConsultasFull).execute();
             logger.log(Level.INFO, "Se creó la tabla consultasfull en Postgres");
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error al crear la tabla de consultas completa");
+            logger.log(Level.FATAL, "Error al crear la tabla de consultas completa");
             e.printStackTrace();
             exitoso = false;
         }
@@ -191,12 +184,12 @@ public class AdministradorBDL {
                     listaAgrupaciones.add(agrupacion);
                     //System.out.println(idPaciente);
                 }catch(Exception e){
-                    logger.log(Level.WARNING, "Error al traer datos para crear agrupación \n" +
+                    logger.log(Level.WARN, "Error al traer datos para crear agrupación \n" +
                             "Causa: " + e.getMessage());
                 }
             }
         } catch (SQLException e) {
-            logger.log(Level.WARNING, "Error al crear agrupación \n" +
+            logger.log(Level.WARN, "Error al crear agrupación \n" +
                     "Causa: " + e.getMessage());
         }
         return listaAgrupaciones;
@@ -209,7 +202,7 @@ public class AdministradorBDL {
             conexion.prepareStatement(deleteAgrupacion + 2).execute();
             conexion.prepareStatement(deleteAgrupacion + 3).execute();
         } catch (SQLException e) {
-            logger.log(Level.WARNING, "Error al vaciar las tablas auxiliares \n" +
+            logger.log(Level.WARN, "Error al vaciar las tablas auxiliares \n" +
                     "Causa: " + e.getMessage());
         }
         String query = "";

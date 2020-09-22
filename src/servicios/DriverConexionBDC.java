@@ -1,13 +1,9 @@
 package servicios;
 
-import app.InterfazIntegradorBD;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.sql.*;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 public class DriverConexionBDC {
 
@@ -15,7 +11,7 @@ public class DriverConexionBDC {
     private ResultSet conjuntoDatos;
     private ResultSet conjuntoPreferenciales;
 
-    private static final Logger logger = InterfazIntegradorBD.LOGGER;
+    public static final Logger logger = Logger.getRootLogger();
     private static final String CLASS_NAME = "com.informix.jdbc.IfxDriver";
     private static final String URL_INFORMIX = "jdbc:informix-sqli://172.17.130.190:1525/basdat:INFORMIXSERVER=servinte_tcp;user=servintebd;password=servinte2014";
     private static final int MAX_INTENTOS = 3;
@@ -33,7 +29,7 @@ public class DriverConexionBDC {
             exitoso = true;
             logger.log(Level.INFO, "Se cargó el Driver JDBC Informix correctamente");
         }catch (Exception e){
-            logger.log(Level.SEVERE,"ERROR: No se pudo cargar el driver de Informix");
+            logger.log(Level.FATAL,"ERROR: No se pudo cargar el driver de Informix");
             e.printStackTrace();
         }
         if(exitoso == true){
@@ -44,7 +40,7 @@ public class DriverConexionBDC {
             }
             catch (SQLException e)
             {
-                logger.log(Level.SEVERE, "ERROR: no se ha podido conectar con la BD informix \n" +
+                logger.log(Level.FATAL, "ERROR: no se ha podido conectar con la BD informix \n" +
                         "Causa: " + e.getMessage() );
                 e.printStackTrace();
                 exitoso = false;
@@ -86,7 +82,7 @@ public class DriverConexionBDC {
                 logger.log(Level.INFO,"Datos recbidos correctamente");
                 exitoso = true;
             }catch(SQLException e){
-                logger.log(Level.WARNING, "Error en la petición de datos a informix");
+                logger.log(Level.WARN, "Error en la petición de datos a informix");
                 e.printStackTrace();
             }
             contadorIntentos++;
@@ -109,7 +105,7 @@ public class DriverConexionBDC {
                 logger.log(Level.INFO, "Petición de datos de pacientes preferenciales exitosa");
                 exitoso = true;
             } catch (SQLException e) {
-                logger.log(Level.WARNING, "Error en la petición de datos de pacientes preferenciales");
+                logger.log(Level.WARN, "Error en la petición de datos de pacientes preferenciales");
                 e.printStackTrace();
             }
         }

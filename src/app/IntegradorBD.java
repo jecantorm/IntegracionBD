@@ -3,25 +3,33 @@ package app;
 import entidades.CitaMedica;
 import entidades.Paciente;
 import entidadesAuxiliares.AgrupacionCitas;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import servicios.AdministradorBDL;
 import servicios.DriverConexionBDC;
 import servicios.LectorBDC;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-public class IntegradorBD extends Thread{
+public class IntegradorBD extends Thread {
 
     //Atributos
-    private boolean corriendo;
-    private boolean detener;
-    private InterfazIntegradorBD interfaz;
+    private final AtomicBoolean corriendo = new AtomicBoolean(false);
+    private MainActualizacionInstantanea interfaz;
 
-    private static final Logger logger = InterfazIntegradorBD.LOGGER;
+    public boolean isCorriendo() {
+        return corriendo.get();
+    }
 
-    public IntegradorBD(InterfazIntegradorBD interfaz) {
+    public void detener(){
+        corriendo.set(false);
+    }
+
+    public static final Logger logger = Logger.getRootLogger();
+
+    public IntegradorBD(MainActualizacionInstantanea interfaz) {
         this.interfaz = interfaz;
     }
 
@@ -29,11 +37,12 @@ public class IntegradorBD extends Thread{
     public void run() {
         super.run();
         logger.log(Level.INFO, "----------------------------------------");
-        corriendo = true;
-        detener = false;
-        interfaz.activarCorrer(false);
+        corriendo.set(true);
         boolean iniciado = false;
-        while(corriendo && !detener){
+        if(interfaz != null){
+            interfaz.activarBotonCorrer(false);
+        }
+        while(corriendo.get()){
             //Revision para actualizacion automática
             logger.log(Level.INFO, "SE INICIÓ EL SERVICIO DE ACTUALIZACIÓN");
             boolean conexionInformix = false;
@@ -71,38 +80,36 @@ public class IntegradorBD extends Thread{
                                         logger.log(Level.INFO,
                                                 "No se guardaron las consultas en postgres");
                                     }
-                                    detener = true;
-                                    corriendo = false;
+                                    corriendo.set(false);
                                 }
                             }else{
                                 //No se pudo conectar con postgres
-                                logger.log(Level.SEVERE, "No se pudo conectar con postgres");
-                                detener = true;
+                                logger.log(Level.FATAL, "No se pudo conectar con postgres");
+                                corriendo.set(false);
                             }
                         }else{
                             //No se transformaron los datos
-                            logger.log(Level.SEVERE, "No se transformarons los datos de informmix");
-                            detener = true;
+                            logger.log(Level.FATAL, "No se transformarons los datos de informmix");
+                            corriendo.set(false);
                         }
                     }else{
                         //No se transformaron los datos preferenciales
-                        logger.log(Level.SEVERE, "No se transformaron los datos de pacientes preferenciales");
-                        detener = true;
+                        logger.log(Level.FATAL, "No se transformaron los datos de pacientes preferenciales");
+                        corriendo.set(false);
                     }
                 }else{
                     //No se obtuvieron datos desde informix
-                    logger.log(Level.SEVERE, "No se recibieron los datos de informix correctamente");
-                    detener = true;
+                    logger.log(Level.FATAL, "No se recibieron los datos de informix correctamente");
+                    corriendo.set(false);
                 }
             }else{
                 //No hubo conexion con informix
-                logger.log(Level.SEVERE, "No hay conexión con informix");
-                detener = true;
+                logger.log(Level.FATAL, "No hay conexión con informix");
+                corriendo.set(false);
             }
         }
-        interfaz.activarCorrer(true);
-//        interfaz.activarPanelHoraActualizacion1(true);
-//        interfaz.activarPanelHoraActualizacion2(true);
+        if(interfaz != null){
+            interfaz.activarBotonCorrer(true);
+        }
     }
-
 }

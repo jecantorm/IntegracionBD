@@ -1,0 +1,7 @@
+18/09/2020 12:02:27 (IntegradorBD-INFO): ----------------------------------------
+18/09/2020 12:02:27 (IntegradorBD-INFO): SE INICIÓ EL SERVICIO DE ACTUALIZACIÓN
+18/09/2020 12:02:27 (IntegradorBD-INFO): Conectandose a informix
+18/09/2020 12:02:27 (DriverConexionBDC-INFO): Se cargó el Driver JDBC Informix correctamente
+18/09/2020 12:02:49 (DriverConexionBDC-FATAL): ERROR: no se ha podido conectar con la BD informix 
+Causa: com.informix.asf.IfxASFException: Attempt to connect to database server (servinte_tcp) failed.
+18/09/2020 12:02:49 (IntegradorBD-FATAL): No hay conexión con informix

@@ -1,31 +1,28 @@
 package servicios;
 
 import app.IntegradorBD;
-import app.InterfazIntegradorBD;
+import app.MainActualizacionInstantanea;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+
 
 public class VerificadorHora extends Thread{
 
     private Calendar calendarActualizacion;
     private final AtomicBoolean corriendo = new AtomicBoolean(false);
-    private InterfazIntegradorBD interfaz;
+    private MainActualizacionInstantanea interfaz;
     private String horaActualizacion;
 
     private static final SimpleDateFormat parser = new SimpleDateFormat("HH:mm");
-    private static final Logger logger = InterfazIntegradorBD.LOGGER;
+    public static final Logger logger = Logger.getRootLogger();
 
-    public VerificadorHora(InterfazIntegradorBD interfaz){
-        this.interfaz = interfaz;
+    public VerificadorHora(){
     }
 
     public boolean establecerHoraActualizacion(String horaActualizacion){
@@ -57,7 +54,8 @@ public class VerificadorHora extends Thread{
             int minutosActualizacion = calendarActualizacion.get(Calendar.MINUTE);
             if(horaActual == horaActualizacion && minutosActual== minutosActualizacion){
                 logger.log(Level.INFO, "Comenzando actualización automática");
-                interfaz.correr();
+                IntegradorBD integradorBD = new IntegradorBD(null);
+                integradorBD.start();
                 try {
                     sleep(65000);
                 } catch (InterruptedException e) {

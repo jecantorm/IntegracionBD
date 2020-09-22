@@ -1,18 +1,13 @@
 package servicios;
 
-import app.InterfazIntegradorBD;
 import entidades.CitaMedica;
 import entidades.Paciente;
 import entidades.Sede;
-import entidadesAuxiliares.Preferencial;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 public class LectorBDC {
 
@@ -21,7 +16,7 @@ public class LectorBDC {
     private ArrayList<CitaMedica> citasMedicas;
     private ArrayList<Paciente> pacientesPreferenciales;
 
-    private static final Logger logger = InterfazIntegradorBD.LOGGER;
+    public static final Logger logger = Logger.getRootLogger();
 
     public LectorBDC(ResultSet conjuntoDatos, ResultSet conjuntoPreferenciales){
         this.conjuntoDatos = conjuntoDatos;
@@ -76,13 +71,13 @@ public class LectorBDC {
                     citasMedicas.add(citaMedica);
                     contador++;
                 }catch(Exception e){
-                    logger.log(Level.WARNING, "Error en la tansformación de datos: " + e.getMessage());
+                    logger.log(Level.WARN, "Error en la tansformación de datos: " + e.getMessage());
                 }
             }
             logger.log(Level.INFO,"Se transformaron " + citasMedicas.size() + " citas médicas");
             logger.log(Level.INFO, "Se leyeron " + contador + " registros provenientes de informix");
         }catch(Exception e){
-            logger.log(Level.WARNING, "Error en la tansformación de datos: " + e.getMessage());
+            logger.log(Level.WARN, "Error en la tansformación de datos: " + e.getMessage());
             e.printStackTrace();
             exitoso = false;
         }
@@ -117,13 +112,13 @@ public class LectorBDC {
                     Paciente pacientePreferencial = new Paciente(idPaciente, true, nombrePaciente);
                     pacientesPreferenciales.add(pacientePreferencial);
                 }catch (Exception e){
-                    logger.log(Level.WARNING, "Error al transformar datos del paciente preferencial \n" +
+                    logger.log(Level.WARN, "Error al transformar datos del paciente preferencial \n" +
                             "Causa: " + e.getMessage());
                 }
             }
             logger.log(Level.INFO, "Se transformaron los datos de pacientes preferenciales");
         }catch(Exception e){
-            logger.log(Level.SEVERE, "Error al transformar datos de pacientes preferenciales \n" +
+            logger.log(Level.FATAL, "Error al transformar datos de pacientes preferenciales \n" +
                     "Causa: " + e.getMessage());
             e.printStackTrace();
             exitoso = false;
