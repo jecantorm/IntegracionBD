@@ -1,0 +1,23 @@
+[INFO ] 2020-09-23 12:46:37 [Thread-3] - ----------------------------------------
+[INFO ] 2020-09-23 12:46:37 [Thread-3] - SE INICIÓ EL SERVICIO DE ACTUALIZACIÓN
+[INFO ] 2020-09-23 12:46:37 [Thread-3] - ----------------------------------------
+[INFO ] 2020-09-23 12:46:37 [Thread-3] - Conectandose a informix
+[INFO ] 2020-09-23 12:46:37 [Thread-3] - Se cargó el Driver JDBC Informix correctamente
+[INFO ] 2020-09-23 12:46:37 [Thread-3] - Conexión exitosa con la BD informix
+[INFO ] 2020-09-23 12:46:37 [Thread-3] - Realizando intento #1 de petición de datos a infromix
+[INFO ] 2020-09-23 12:46:39 [Thread-3] - Datos de informix recbidos correctamente
+[INFO ] 2020-09-23 12:46:39 [Thread-3] - Realizando intento #1 de petición de pacientes preferenciales a infromix
+[INFO ] 2020-09-23 12:46:45 [Thread-3] - Petición de datos de pacientes preferenciales exitosa
+[INFO ] 2020-09-23 12:46:45 [Thread-3] - Transformando datos de pacientes preferenciales
+[WARN ] 2020-09-23 12:47:00 [Thread-3] - Error al transformar datos del paciente preferencial 
+Causa: For input string: "23262545 "
+[INFO ] 2020-09-23 12:47:00 [Thread-3] - Se transformaron los datos de pacientes preferenciales
+[INFO ] 2020-09-23 12:47:00 [Thread-3] - Transformando datos recibidos
+[INFO ] 2020-09-23 12:47:41 [Thread-3] - Se transformaron 2042 citas médicas 
+Se leyeron 2042 registros provenientes de informix
+[INFO ] 2020-09-23 12:47:41 [Thread-3] - Conectado a la BD local Postgres
+[INFO ] 2020-09-23 12:47:48 [Thread-3] - Citas médicas recibidas de informix: 2042
+Citas médicas guardadas en Postgres: 2042
+[INFO ] 2020-09-23 12:47:48 [Thread-3] - Creando tabla de consultas completa
+[INFO ] 2020-09-23 12:47:48 [Thread-3] - Se creó la tabla 'consultasfull' en Postgres
+[INFO ] 2020-09-23 12:47:49 [Thread-3] - FINALIZÓ EL SERVICIO DE ACTUALIZACIÓN SATISFACTORIAMENTE

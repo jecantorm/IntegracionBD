@@ -74,12 +74,12 @@ public class LectorBDC {
                     logger.log(Level.WARN, "Error en la tansformación de datos: " + e.getMessage());
                 }
             }
-            logger.log(Level.INFO,"Se transformaron " + citasMedicas.size() + " citas médicas");
-            logger.log(Level.INFO, "Se leyeron " + contador + " registros provenientes de informix");
+            String msj = "Se transformaron " + citasMedicas.size() + " citas médicas \n" +
+                    "Se leyeron " + contador + " registros provenientes de informix";
+            logger.log(Level.INFO,msj);
         }catch(Exception e){
-            logger.log(Level.WARN, "Error en la tansformación de datos: " + e.getMessage());
-            e.printStackTrace();
             exitoso = false;
+            logger.log(Level.FATAL, "Error en la tansformación de datos\n " + e);
         }
         return exitoso;
     }
@@ -119,8 +119,7 @@ public class LectorBDC {
             logger.log(Level.INFO, "Se transformaron los datos de pacientes preferenciales");
         }catch(Exception e){
             logger.log(Level.FATAL, "Error al transformar datos de pacientes preferenciales \n" +
-                    "Causa: " + e.getMessage());
-            e.printStackTrace();
+                    "Causa: " + e.getMessage() + "\n" + e);
             exitoso = false;
         }
         return exitoso;

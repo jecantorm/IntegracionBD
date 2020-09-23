@@ -35,7 +35,7 @@ public class VerificadorHora extends Thread{
             calendarActualizacion.setTime(dateActuailizacion);
         } catch (ParseException e) {
             rta = false;
-            e.printStackTrace();
+            logger.log(Level.FATAL, "Error en el formato de las horas de actualización \n" + e);
         }
         return rta;
     }
@@ -59,13 +59,13 @@ public class VerificadorHora extends Thread{
                 try {
                     sleep(65000);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    logger.log(Level.ERROR, "Se interrumpió la ejecución del verificador de horas \n" + e);
                 }
             }else{
                 try {
                     sleep(5000);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    logger.log(Level.ERROR, "Se interrumpió la ejecución del verificador de horas \n" + e);
                 }
             }
         }

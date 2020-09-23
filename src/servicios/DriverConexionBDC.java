@@ -29,8 +29,7 @@ public class DriverConexionBDC {
             exitoso = true;
             logger.log(Level.INFO, "Se cargó el Driver JDBC Informix correctamente");
         }catch (Exception e){
-            logger.log(Level.FATAL,"ERROR: No se pudo cargar el driver de Informix");
-            e.printStackTrace();
+            logger.log(Level.FATAL,"ERROR: No se pudo cargar el driver de Informix\n" + e);
         }
         if(exitoso == true){
             try
@@ -40,10 +39,9 @@ public class DriverConexionBDC {
             }
             catch (SQLException e)
             {
-                logger.log(Level.FATAL, "ERROR: no se ha podido conectar con la BD informix \n" +
-                        "Causa: " + e.getMessage() );
-                e.printStackTrace();
                 exitoso = false;
+                logger.log(Level.FATAL, "ERROR: no se ha podido conectar con la BD informix \n" +
+                        "Causa: " + e.getMessage() + "\n" + e);
             }
         }
         return exitoso;
@@ -79,11 +77,10 @@ public class DriverConexionBDC {
             try{
                 PreparedStatement pstmt = conn.prepareStatement(peticion);
                 conjuntoDatos = pstmt.executeQuery();
-                logger.log(Level.INFO,"Datos recbidos correctamente");
+                logger.log(Level.INFO,"Datos de informix recbidos correctamente");
                 exitoso = true;
             }catch(SQLException e){
-                logger.log(Level.WARN, "Error en la petición de datos a informix");
-                e.printStackTrace();
+                logger.log(Level.WARN, "Error en la petición de datos a informix\n" + e);
             }
             contadorIntentos++;
         }
@@ -105,8 +102,7 @@ public class DriverConexionBDC {
                 logger.log(Level.INFO, "Petición de datos de pacientes preferenciales exitosa");
                 exitoso = true;
             } catch (SQLException e) {
-                logger.log(Level.WARN, "Error en la petición de datos de pacientes preferenciales");
-                e.printStackTrace();
+                logger.log(Level.WARN, "Error en la petición de datos de pacientes preferenciales \n" + e);
             }
         }
     }

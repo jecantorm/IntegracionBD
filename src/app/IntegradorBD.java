@@ -45,6 +45,7 @@ public class IntegradorBD extends Thread {
         while(corriendo.get()){
             //Revision para actualizacion automática
             logger.log(Level.INFO, "SE INICIÓ EL SERVICIO DE ACTUALIZACIÓN");
+            logger.log(Level.INFO, "----------------------------------------");
             boolean conexionInformix = false;
             logger.log(Level.INFO, "Conectandose a informix");
             DriverConexionBDC driverConexionBDC = new DriverConexionBDC();
@@ -74,7 +75,8 @@ public class IntegradorBD extends Thread {
                                     if(tablaConsultasFull){
                                         ArrayList<AgrupacionCitas> ls = administradorBDL.crearAgrupaciones();
                                         administradorBDL.crearTablasAuxiliares(ls);
-                                        logger.log(Level.INFO, "FINALIZÓ EL SERVICIO DE ACTUALIZACIÓN");
+                                        logger.log(Level.INFO, "FINALIZÓ EL SERVICIO DE ACTUALIZACIÓN" +
+                                                " SATISFACTORIAMENTE");
                                     }else{
                                         //No se creó la tabla de consultas full
                                         logger.log(Level.INFO,

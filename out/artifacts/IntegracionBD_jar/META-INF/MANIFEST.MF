@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Main-Class: app.MainActualizacionInstantanea
+Class-Path: ifxjdbc.jar ifxlang.jar ifxlsupp.jar ifxtools.jar log4j-api-
+ 2.13.3.jar log4j-core-2.13.3.jar postgresql-42.2.16.jar log4j-1.2-api-2
+ .13.3.jar ifxjdbc.jar ifxlang.jar ifxlsupp.jar ifxtools.jar log4j-api-2
+ .13.3.jar log4j-core-2.13.3.jar postgresql-42.2.16.jar log4j-1.2-api-2.
+ 13.3.jar
+

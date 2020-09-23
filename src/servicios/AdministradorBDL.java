@@ -30,7 +30,7 @@ public class AdministradorBDL {
     }
 
     public boolean conectarseBDPostgres(){
-        boolean exitoso = true;
+        boolean exitoso;
         conexion = null;
         try{
             conexion = DriverManager.getConnection(URL,
@@ -38,9 +38,8 @@ public class AdministradorBDL {
             exitoso = true;
             logger.log(Level.INFO,"Conectado a la BD local Postgres");
         }catch (Exception e){
-            logger.log(Level.FATAL,"Error al conectarse con Postgres");
-            e.printStackTrace();
             exitoso = false;
+            logger.log(Level.FATAL,"Error al conectarse con Postgres\n" + e);
         }
         return exitoso;
     }
@@ -57,13 +56,15 @@ public class AdministradorBDL {
             conexion.prepareStatement(deleteSede).execute();
         } catch (SQLException e) {
             logger.log(Level.WARN, "Error al vaciar las tablas de Postgres\n " +
+                    "Puede que algunos datos se encuentren desactualizados \n" +
                     "Causa: " + e.getMessage());
             exitoso = false;
         }
         try {
             conexion.prepareStatement(dropConsultas).execute();
-        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
+        }catch (SQLException throwables) {
+            logger.log(Level.WARN, "Error al vaciar la tabla consultas \n" +
+                    "Puede que algunos datos estén desactualizados");
         }
         return exitoso;
     }
@@ -82,7 +83,6 @@ public class AdministradorBDL {
                     conexion.prepareStatement(queryInsertPaciente).execute();
                 }else{
                     //No se inserta porque ya existe
-                    //System.out.println("El paciente " + paciente.getIdPaciente() + " no se insertó porque ya existe");
                 }
             } catch (SQLException e) {
                 logger.log(Level.WARN, "Error al insertar paciente: " + e.getMessage());
@@ -104,7 +104,6 @@ public class AdministradorBDL {
                     conexion.prepareStatement(queryInsertSede).execute();
                 }else{
                     //No se inserta porque ya existe
-                    //System.out.println("La sede " + sede.getNombre() + " no se insertó porque ya existe");
                 }
             } catch (SQLException e) {
                 logger.log(Level.WARN, "Error al insertar sede: " + e.getMessage());
@@ -121,7 +120,6 @@ public class AdministradorBDL {
                     conexion.prepareStatement(queryInsertPaciente).execute();
                 }else{
                     //No se inserta porque ya existe
-                    //System.out.println("El paciente " + paciente.getIdPaciente() + " no se insertó porque ya existe");
                 }
             } catch (SQLException e) {
                 logger.log(Level.WARN, "Error al insertar paciente: " + e.getMessage());
@@ -134,7 +132,6 @@ public class AdministradorBDL {
                     + citaMedica.getSede().getIdSede() + ",'" + citaMedica.getEspecialidad() + "','"
                     + citaMedica.getFecha().toString() + "','"
                     + citaMedica.getHora().toString() + "');";
-            //System.out.println(queryInsertCita);
             try {
                 ResultSet rs = conexion.prepareStatement(querySelectCita).executeQuery();
                 if(!rs.next()){
@@ -142,14 +139,14 @@ public class AdministradorBDL {
                     contador++;
                 }else{
                     //No se inserta porque ya existe
-                    //System.out.println("La cita " + citaMedica.getIdCita() + " no se insertó porque ya existe");
                 }
             } catch (SQLException e) {
                 logger.log(Level.WARN,"Error al insertar cita: " + e.getMessage());
             }
         }
-        logger.log(Level.INFO, "Citas médicas recibidas de informix: " + citasMedicas.size() + "\n" +
-                "Citas médicas guardadas en Postgres: " + contador);
+        String msj = "Citas médicas recibidas de informix: " + citasMedicas.size() + "\n" +
+                "Citas médicas guardadas en Postgres: " + contador;
+        logger.log(Level.INFO, msj);
     }
 
     public boolean crearTablaConsultasFull(){
@@ -162,10 +159,9 @@ public class AdministradorBDL {
         try {
             logger.log(Level.INFO, "Creando tabla de consultas completa");
             conexion.prepareStatement(queryConsultasFull).execute();
-            logger.log(Level.INFO, "Se creó la tabla consultasfull en Postgres");
+            logger.log(Level.INFO, "Se creó la tabla 'consultasfull' en Postgres");
         } catch (SQLException e) {
-            logger.log(Level.FATAL, "Error al crear la tabla de consultas completa");
-            e.printStackTrace();
+            logger.log(Level.FATAL, "Error al crear la tabla de consultas completa\n" + e);
             exitoso = false;
         }
         return exitoso;
@@ -254,7 +250,8 @@ public class AdministradorBDL {
                 }
                 if(listaConsultas.size() > 2){
                     Consulta consulta2 = listaConsultas.get(2);
-                    String queryInsert1 = "INSERT INTO consultas3 (id_cita, id_paciente, nombre_paciente, nombre_sede, especialidad, fecha, hora) " +
+                    String queryInsert1 = "INSERT INTO consultas3 (id_cita, id_paciente, nombre_paciente, " +
+                            "nombre_sede, especialidad, fecha, hora) " +
                             "VALUES (" + consulta2.getIdConsulta() + "," + consulta2.getIdPaciente()
                             + " ,'" + consulta2.getNombrePaciente() + "','" + consulta2.getNombreSede() + "','"
                             + consulta2.getEspecialidad() + "','" + consulta2.getFecha().toString() + "','"
@@ -266,9 +263,8 @@ public class AdministradorBDL {
                     }
                 }
             }catch (SQLException e){
-                e.printStackTrace();
+                logger.log(Level.FATAL, "Error al crear las tablas de consultas ordenadas por días\n" + e);
             }
-
         }
     }
 }
