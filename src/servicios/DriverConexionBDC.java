@@ -38,8 +38,7 @@ public class DriverConexionBDC {
     /**
      * Constante que modela el string de conexión con informix
      */
-    private static final String URL_INFORMIX = "jdbc:informix-sqli://172.17.130.190:1525/basdat:INFORMIXSERVER" +
-            "=servinte_tcp;user=servintebd;password=servinte2014";
+    private final String url_informix;
 
     /**
      * Constante que modela el número máxímo de intentos de reconexión
@@ -48,12 +47,13 @@ public class DriverConexionBDC {
 
     /**
      * Constructor de la clase
+     * @param credencialesInformix credenciales de conexión con informix
      */
     public DriverConexionBDC(String[] credencialesInformix){
-        String url_informix = "jdbc:informix-sqli://172.17.130.190:1525/basdat:INFORMIXSERVER" +
-                "=servinte_tcp;user=" + credencialesInformix[0] + ";password=" + credencialesInformix[1];
         conjuntoDatos = null;
         conjuntoPreferenciales = null;
+        url_informix = "jdbc:informix-sqli://172.17.130.190:1525/basdat:INFORMIXSERVER" +
+                "=servinte_tcp;user=" + credencialesInformix[0] + ";password=" + credencialesInformix[1];
     }
 
     /**
@@ -72,7 +72,7 @@ public class DriverConexionBDC {
         if(exitoso == true){
             try
             {
-                conn = DriverManager.getConnection(URL_INFORMIX);
+                conn = DriverManager.getConnection(url_informix);
                 logger.log(Level.INFO,"Conexión exitosa con la BD informix");
             }
             catch (SQLException e)

@@ -23,6 +23,7 @@ public class LectorCredenciales {
             String line;
             while((line = br.readLine()) != null && contador < 2){
                 rta[contador] = line.split("=")[1];
+                contador++;
             }
         } catch (FileNotFoundException e) {
             logger.log(Level.FATAL, "No se encontró el archivo de credenciales de informix");
@@ -53,7 +54,8 @@ public class LectorCredenciales {
             int contador = 0;
             String line;
             while((line = br.readLine()) != null && contador < 2){
-                rta[contador] = line;
+                rta[contador] = line.split("=")[1];
+                contador++;
             }
         } catch (FileNotFoundException e) {
             logger.log(Level.FATAL, "No se encontró el archivo de credenciales de postgres");
@@ -72,4 +74,12 @@ public class LectorCredenciales {
         }
         return rta;
     }
+
+//    public static void main(String[] args){
+//        LectorCredenciales lc = new LectorCredenciales();
+//        String[] credInformix = lc.leerCredencialesInformix();
+//        String[] credPostgres = lc.leerCredencialesPostgres();
+//        System.out.println("Usuario: " + credInformix[0] + " Contraseña: " + credInformix[1]);
+//        System.out.println("Usuario: " + credPostgres[0] + " Contraseña: " + credPostgres[1]);
+//    }
 }

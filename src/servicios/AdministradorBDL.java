@@ -20,12 +20,12 @@ public class AdministradorBDL {
     /**
      * Atributo que modela las citas médicas
      */
-    private ArrayList<CitaMedica> citasMedicas;
+    private final ArrayList<CitaMedica> citasMedicas;
 
     /**
      * Atributo que modela la lista de pacientes preferenciales
      */
-    private ArrayList<Paciente> pacientesPreferenciales;
+    private final ArrayList<Paciente> pacientesPreferenciales;
 
     /**
      * Atributo que guarda la conexión
@@ -40,12 +40,12 @@ public class AdministradorBDL {
     /**
      * Constante que guarda el nombre de usuario de la BD de postgres
      */
-    private static final String USUARIO = "postgres";
+    private final String usuario;
 
     /**
      * Constante que guarda la contraseña de la BD de postgres
      */
-    private static final String CONTRASENIA = "12345";
+    private final String contrasenia;
 
     /**
      * Constante que guarda el logger
@@ -59,13 +59,16 @@ public class AdministradorBDL {
 
     /**
      * Constructor de la clase de conexión con postgres
+     * @param credenciales credenciales de conexión con postgres
      * @param citasMedicas lista de citas médicas
      * @param pacientesPreferenciales lista de pacientes preferenciales
      */
-    public AdministradorBDL(ArrayList<CitaMedica> citasMedicas, ArrayList<Paciente> pacientesPreferenciales){
+    public AdministradorBDL(String[] credenciales, ArrayList<CitaMedica> citasMedicas,
+                            ArrayList<Paciente> pacientesPreferenciales){
         this.citasMedicas = citasMedicas;
         this.pacientesPreferenciales = pacientesPreferenciales;
-        FileHandler fh;
+        this.usuario = credenciales[0];
+        this.contrasenia = credenciales[1];
     }
 
     /**
@@ -82,13 +85,14 @@ public class AdministradorBDL {
                         + " con Postgres");
             try{
                 conexion = DriverManager.getConnection(URL,
-                        USUARIO, CONTRASENIA);
+                        usuario, contrasenia);
                 exitoso = true;
                 logger.log(Level.INFO,"Conectado a la BD local Postgres");
             }catch (Exception e){
                 exitoso = false;
                 logger.log(Level.FATAL,"Error al conectarse con Postgres\n" + e);
             }
+            contador++;
         }
         return exitoso;
     }
@@ -137,9 +141,8 @@ public class AdministradorBDL {
                 ResultSet rs = conexion.prepareStatement(querySelectPaciente).executeQuery();
                 if(!rs.next()){
                     conexion.prepareStatement(queryInsertPaciente).execute();
-                }else{
-                    //No se inserta porque ya existe
-                }
+                }//No se inserta porque ya existe
+
             } catch (SQLException e) {
                 logger.log(Level.WARN, "Error al insertar paciente: " + e.getMessage());
             }
@@ -161,9 +164,8 @@ public class AdministradorBDL {
                 ResultSet rs = conexion.prepareStatement(querySelectSede).executeQuery();
                 if(!rs.next()){
                     conexion.prepareStatement(queryInsertSede).execute();
-                }else{
-                    //No se inserta porque ya existe
-                }
+                }//No se inserta porque ya existe
+
             } catch (SQLException e) {
                 logger.log(Level.WARN, "Error al insertar sede: " + e.getMessage());
             }
@@ -177,8 +179,6 @@ public class AdministradorBDL {
                 ResultSet rs = conexion.prepareStatement(querySelectPaciente).executeQuery();
                 if(!rs.next()){
                     conexion.prepareStatement(queryInsertPaciente).execute();
-                }else{
-                    //No se inserta porque ya existe
                 }
             } catch (SQLException e) {
                 logger.log(Level.WARN, "Error al insertar paciente: " + e.getMessage());
@@ -196,8 +196,6 @@ public class AdministradorBDL {
                 if(!rs.next()){
                     conexion.prepareStatement(queryInsertCita).execute();
                     contador++;
-                }else{
-                    //No se inserta porque ya existe
                 }
             } catch (SQLException e) {
                 logger.log(Level.WARN,"Error al insertar cita: " + e.getMessage());

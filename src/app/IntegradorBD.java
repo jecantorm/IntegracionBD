@@ -92,8 +92,9 @@ public class IntegradorBD extends Thread {
                         if(transformacionDatos){
                             ArrayList<CitaMedica> citasMedicas = lector.getCitasMedicas();
                             ArrayList<Paciente> pacientesPreferenciales = lector.getPacientesPreferenciales();
+                            String[] credencialesPostgres = lectorCredenciales.leerCredencialesPostgres();
                             AdministradorBDL administradorBDL
-                                    = new AdministradorBDL(citasMedicas, pacientesPreferenciales);
+                                    = new AdministradorBDL(credencialesPostgres,citasMedicas, pacientesPreferenciales);
                             boolean conexionPostgres = administradorBDL.conectarseBDPostgres();
                             if(conexionPostgres){
                                 boolean vaciarTablas = administradorBDL.vaciarTablas();
