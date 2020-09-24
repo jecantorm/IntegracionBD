@@ -24,25 +24,34 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e59beead-ccb3-4eb5-9a80-eec210838ef1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/IntegradorBD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/IntegradorBD.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/MainActualizacionInstantanea.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/MainActualizacionInstantanea.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/MainActualizacionesAutomaticas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/MainActualizacionesAutomaticas.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entidades/CitaMedica.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entidades/CitaMedica.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entidades/Consulta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entidades/Consulta.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entidades/Paciente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entidades/Paciente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entidadesAuxiliares/AgrupacionCitas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entidadesAuxiliares/AgrupacionCitas.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entidadesAuxiliares/Preferencial.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interfaz/PanelBotones.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/interfaz/PanelBotones.java" afterDir="false" />
+    <list default="true" id="1e7ace9c-4be5-468a-9862-fb5ed5604e23" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/IntegracionBD_jar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/IntegracionBD_jar2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar/IntegracionBD.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar/ifxjdbc.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar/ifxlang.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar/ifxlsupp.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar/ifxtools.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar/log4j-1.2-api-2.13.3.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar/log4j-api-2.13.3.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar/log4j-core-2.13.3.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar/logs/app-info.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar/postgresql-42.2.16.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar2/IntegracionBD.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar2/ifxjdbc.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar2/ifxlang.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar2/ifxlsupp.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar2/ifxtools.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar2/log4j-1.2-api-2.13.3.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar2/log4j-api-2.13.3.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar2/log4j-core-2.13.3.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar2/logs/app-info.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/IntegracionBD_jar2/postgresql-42.2.16.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/servicios/AdministradorBDL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/servicios/AdministradorBDL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/servicios/DriverConexionBDC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/servicios/DriverConexionBDC.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/servicios/LectorBDC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/servicios/LectorBDC.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/servicios/VerificadorHora.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/servicios/VerificadorHora.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +79,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib" />
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="editing.templates" />
@@ -169,7 +178,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="e59beead-ccb3-4eb5-9a80-eec210838ef1" name="Default Changelist" comment="" />
+      <changelist id="1e7ace9c-4be5-468a-9862-fb5ed5604e23" name="Default Changelist" comment="" />
       <created>1598973675504</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -213,26 +222,35 @@
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state x="499" y="164" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.834@0.0.1536.834" timestamp="1600378173204" />
-    <state x="473" y="158" key="FileChooserDialogImpl" timestamp="1600812490045">
-      <screen x="0" y="0" width="1536" height="834" />
+    <state x="561" y="161" key="#com.intellij.util.ui.classpath.ChooseLibrariesDialog" timestamp="1600962197312">
+      <screen x="0" y="0" width="1920" height="813" />
+    </state>
+    <state x="561" y="161" key="#com.intellij.util.ui.classpath.ChooseLibrariesDialog/0.0.1920.813@0.0.1920.813" timestamp="1600962197312" />
+    <state x="591" y="154" key="FileChooserDialogImpl" timestamp="1600962204524">
+      <screen x="0" y="0" width="1920" height="813" />
     </state>
     <state x="473" y="158" key="FileChooserDialogImpl/0.0.1536.834@0.0.1536.834" timestamp="1600812490045" />
-    <state width="1493" height="136" key="GridCell.Tab.0.bottom" timestamp="1600817378241">
-      <screen x="0" y="0" width="1536" height="834" />
+    <state x="591" y="154" key="FileChooserDialogImpl/0.0.1920.813@0.0.1920.813" timestamp="1600962204524" />
+    <state width="1877" height="168" key="GridCell.Tab.0.bottom" timestamp="1600960222511">
+      <screen x="0" y="0" width="1920" height="813" />
     </state>
     <state width="1493" height="136" key="GridCell.Tab.0.bottom/0.0.1536.834@0.0.1536.834" timestamp="1600817378241" />
-    <state width="1493" height="136" key="GridCell.Tab.0.center" timestamp="1600817378241">
-      <screen x="0" y="0" width="1536" height="834" />
+    <state width="1877" height="168" key="GridCell.Tab.0.bottom/0.0.1920.813@0.0.1920.813" timestamp="1600960222511" />
+    <state width="1877" height="168" key="GridCell.Tab.0.center" timestamp="1600960222511">
+      <screen x="0" y="0" width="1920" height="813" />
     </state>
     <state width="1493" height="136" key="GridCell.Tab.0.center/0.0.1536.834@0.0.1536.834" timestamp="1600817378241" />
-    <state width="1493" height="136" key="GridCell.Tab.0.left" timestamp="1600817378241">
-      <screen x="0" y="0" width="1536" height="834" />
+    <state width="1877" height="168" key="GridCell.Tab.0.center/0.0.1920.813@0.0.1920.813" timestamp="1600960222511" />
+    <state width="1877" height="168" key="GridCell.Tab.0.left" timestamp="1600960222510">
+      <screen x="0" y="0" width="1920" height="813" />
     </state>
     <state width="1493" height="136" key="GridCell.Tab.0.left/0.0.1536.834@0.0.1536.834" timestamp="1600817378241" />
-    <state width="1493" height="136" key="GridCell.Tab.0.right" timestamp="1600817378241">
-      <screen x="0" y="0" width="1536" height="834" />
+    <state width="1877" height="168" key="GridCell.Tab.0.left/0.0.1920.813@0.0.1920.813" timestamp="1600960222510" />
+    <state width="1877" height="168" key="GridCell.Tab.0.right" timestamp="1600960222511">
+      <screen x="0" y="0" width="1920" height="813" />
     </state>
     <state width="1493" height="136" key="GridCell.Tab.0.right/0.0.1536.834@0.0.1536.834" timestamp="1600817378241" />
+    <state width="1877" height="168" key="GridCell.Tab.0.right/0.0.1920.813@0.0.1920.813" timestamp="1600960222511" />
     <state width="1493" height="177" key="GridCell.Tab.1.bottom" timestamp="1600727178802">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
@@ -249,10 +267,11 @@
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state width="1493" height="177" key="GridCell.Tab.1.right/0.0.1536.834@0.0.1536.834" timestamp="1600727178802" />
-    <state x="249" y="0" key="SettingsEditor" timestamp="1600812569246">
-      <screen x="0" y="0" width="1536" height="834" />
+    <state x="311" y="0" key="SettingsEditor" timestamp="1600962584795">
+      <screen x="0" y="0" width="1920" height="813" />
     </state>
     <state x="249" y="0" key="SettingsEditor/0.0.1536.834@0.0.1536.834" timestamp="1600812569246" />
+    <state x="311" y="0" key="SettingsEditor/0.0.1920.813@0.0.1920.813" timestamp="1600962584795" />
     <state x="209" y="37" key="new project wizard" timestamp="1599080363870">
       <screen x="0" y="0" width="1536" height="834" />
     </state>

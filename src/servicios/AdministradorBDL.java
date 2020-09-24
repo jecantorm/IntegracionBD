@@ -53,6 +53,11 @@ public class AdministradorBDL {
     public static final Logger logger = Logger.getRootLogger();
 
     /**
+     * Constante que modela el máximo de intentos de conexión
+     */
+    private static final int MAX_INTENTOS = 3;
+
+    /**
      * Constructor de la clase de conexión con postgres
      * @param citasMedicas lista de citas médicas
      * @param pacientesPreferenciales lista de pacientes preferenciales
@@ -65,19 +70,25 @@ public class AdministradorBDL {
 
     /**
      * Método que realiza la conexión con postgres
+     * Se utiliza MAX_INTENTOS para determinar el máximo número de intentos de conexión
      * @return true si se realizó la conexión, false de lo contrario
      */
     public boolean conectarseBDPostgres(){
-        boolean exitoso;
+        boolean exitoso = false;
         conexion = null;
-        try{
-            conexion = DriverManager.getConnection(URL,
-                    USUARIO, CONTRASENIA);
-            exitoso = true;
-            logger.log(Level.INFO,"Conectado a la BD local Postgres");
-        }catch (Exception e){
-            exitoso = false;
-            logger.log(Level.FATAL,"Error al conectarse con Postgres\n" + e);
+        int contador = 1;
+        while(!exitoso && contador <= MAX_INTENTOS){
+            logger.log(Level.INFO, "Realizando intento de conexión #" + contador
+                        + " con Postgres");
+            try{
+                conexion = DriverManager.getConnection(URL,
+                        USUARIO, CONTRASENIA);
+                exitoso = true;
+                logger.log(Level.INFO,"Conectado a la BD local Postgres");
+            }catch (Exception e){
+                exitoso = false;
+                logger.log(Level.FATAL,"Error al conectarse con Postgres\n" + e);
+            }
         }
         return exitoso;
     }
