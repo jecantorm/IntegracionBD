@@ -4,15 +4,20 @@ import interfaz.PanelBotones;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
+/**
+ * Clase que modela la interfaz gráfica de actualización manual
+ */
 public class MainActualizacionInstantanea extends JFrame{
 
+    /**
+     * Panel de botones
+     */
     private PanelBotones panelBotones;
 
+    /**
+     * Constructor de la interfaz gráfica
+     */
     public MainActualizacionInstantanea() {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -26,15 +31,25 @@ public class MainActualizacionInstantanea extends JFrame{
         setVisible(true);
     }
 
+    /**
+     * Método encargado de activar o desactivar el boton de correr
+     * @param activar true si se activa, false de lo contrario
+     */
     public void activarBotonCorrer(boolean activar){
         panelBotones.activarBotonCorrer(activar);
     }
 
+    /**
+     * Método que corre el hilo de actualización
+     */
     public void correr() {
         IntegradorBD integradorBD = new IntegradorBD(this);
         integradorBD.start();
     }
 
+    /**
+     * Punto de partida de la aplicación
+     */
     public static void main(String[] args){
         MainActualizacionInstantanea intefaz = new MainActualizacionInstantanea();
     }

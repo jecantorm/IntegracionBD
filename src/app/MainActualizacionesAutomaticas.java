@@ -10,10 +10,21 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-
+/**
+ * Clase que modela la aplicación para actualizaciones automáticas
+ */
 public class MainActualizacionesAutomaticas {
+
+    /**
+     * Constante que guarda el logger
+     */
     public static final Logger logger = Logger.getRootLogger();
 
+    /**
+     * Método encargado de correr los actualizadores automáticos
+     * @param hora1 hora 1 de actualización
+     * @param hora2 hora 2 de actualización
+     */
     private void correrActualizadoresAutomaticos(String hora1, String hora2){
         VerificadorHora verificadorHora1 = new VerificadorHora();
         verificadorHora1.establecerHoraActualizacion(hora1);
@@ -25,6 +36,10 @@ public class MainActualizacionesAutomaticas {
         verificadorHora2.start();
     }
 
+    /**
+     * Método main, encargado de extraer las horas de actualización e iniciar la aplicación
+     * @param args
+     */
     public static void main(String[] args){
         File archivoProperties = new File("./data/horas.properties");
         try {

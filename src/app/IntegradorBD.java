@@ -13,26 +13,52 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Clase encargada de coordinar el proceso de actualización
+ */
 public class IntegradorBD extends Thread {
 
-    //Atributos
+    /**
+     * Atributo que modela si el hilo está corriendo o no
+     */
     private final AtomicBoolean corriendo = new AtomicBoolean(false);
+
+    /**
+     * Atributo que guarda la interfaz gráfica
+     */
     private MainActualizacionInstantanea interfaz;
 
+    /**
+     * Constante que guarda el logger
+     */
+    public static final Logger logger = Logger.getRootLogger();
+
+    /**
+     * Método que modela si está corriendo el hilo
+     * @return true si está corriendo, false de lo contrario
+     */
     public boolean isCorriendo() {
         return corriendo.get();
     }
 
+    /**
+     * Método encargado de detener la ejecución del hilo
+     */
     public void detener(){
         corriendo.set(false);
     }
 
-    public static final Logger logger = Logger.getRootLogger();
-
+    /**
+     * Constructor de la clase
+     * @param interfaz interfaz gráfica de la aplicación
+     */
     public IntegradorBD(MainActualizacionInstantanea interfaz) {
         this.interfaz = interfaz;
     }
 
+    /**
+     * Método que corre el hilo
+     */
     @Override
     public void run() {
         super.run();

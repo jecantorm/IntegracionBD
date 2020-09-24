@@ -5,23 +5,59 @@ import org.apache.log4j.Logger;
 
 import java.sql.*;
 
+/**
+ * Clase encargada de conectarse con la BD informix
+ */
 public class DriverConexionBDC {
 
+    /**
+     * Atributo que guarda la conexión
+     */
     private Connection conn;
+
+    /**
+     * Atributo que guarda el resultado de todos los datos
+     */
     private ResultSet conjuntoDatos;
+
+    /**
+     * Atributo que guarda el resultado de los datos de pacientes preferenciales
+     */
     private ResultSet conjuntoPreferenciales;
 
+    /**
+     * Constante que guarda el logger
+     */
     public static final Logger logger = Logger.getRootLogger();
+
+    /**
+     * Constante que guarda el nombre del driver de informix
+     */
     private static final String CLASS_NAME = "com.informix.jdbc.IfxDriver";
-    private static final String URL_INFORMIX = "jdbc:informix-sqli://172.17.130.190:1525/basdat:INFORMIXSERVER=servinte_tcp;user=servintebd;password=servinte2014";
+
+    /**
+     * Constante que modela el string de conexión con informix
+     */
+    private static final String URL_INFORMIX = "jdbc:informix-sqli://172.17.130.190:1525/basdat:INFORMIXSERVER" +
+            "=servinte_tcp;user=servintebd;password=servinte2014";
+
+    /**
+     * Constante que modela el número máxímo de intentos de reconexión
+     */
     private static final int MAX_INTENTOS = 3;
 
-
+    /**
+     * Constructor de la clase
+     */
     public DriverConexionBDC(){
         conjuntoDatos = null;
         conjuntoPreferenciales = null;
     }
 
+    /**
+     * Método encargado de realizar la conexión con informix
+     * @return true si fue posible conectarse, false de lo contrario
+     */
     public boolean conectarseBDInformix(){
         boolean exitoso = false;
         try{
@@ -47,6 +83,9 @@ public class DriverConexionBDC {
         return exitoso;
     }
 
+    /**
+     * Método encargado de realizar la petición de datos a informix y guardarlos en el atributo
+     */
     public void realizarPeticionDatos(){
         int contadorIntentos = 1;
         boolean exitoso = false;
@@ -86,6 +125,9 @@ public class DriverConexionBDC {
         }
     }
 
+    /**
+     * Método encargado de pedir los datos de pacientes preferenciales
+     */
     public void peticionPacientesPreferenciales(){
         boolean exitoso = false;
         int contadorIntentos = 1;
@@ -107,7 +149,15 @@ public class DriverConexionBDC {
         }
     }
 
+    /**
+     * Método que retorna el conjunto de datos completo
+     * @return ResultSet con los datos completos
+     */
     public ResultSet getConjuntoDatos(){return conjuntoDatos;}
 
+    /**
+     * Método que retorna el conjunto de datos de pacientes preferenciales
+     * @return ResultSet con los datos de pacientes preferenciales
+     */
     public ResultSet getConjuntoPreferenciales(){return conjuntoPreferenciales;}
 }

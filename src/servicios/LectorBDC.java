@@ -9,15 +9,41 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Clase encargada de leer y traducir los datos provenientes de informix
+ */
 public class LectorBDC {
 
+    /**
+     * Atributo que guarda el conjunto de datos completo recibido
+     */
     private ResultSet conjuntoDatos;
+
+    /**
+     * Atributo que guarda el conjunto de datos de pacientes preferenciales recibido
+     */
     private ResultSet conjuntoPreferenciales;
+
+    /**
+     * Lista que contiene todas las citas médicas transformadas
+     */
     private ArrayList<CitaMedica> citasMedicas;
+
+    /**
+     * Lista que contiene todos los pacientes preferenciales transformados
+     */
     private ArrayList<Paciente> pacientesPreferenciales;
 
+    /**
+     * Constante que guarda el logger
+     */
     public static final Logger logger = Logger.getRootLogger();
 
+    /**
+     * Constructor del lector de datos
+     * @param conjuntoDatos conjunto de datos completo recibido
+     * @param conjuntoPreferenciales conjunto de datos de pacientes preferenciales recibido
+     */
     public LectorBDC(ResultSet conjuntoDatos, ResultSet conjuntoPreferenciales){
         this.conjuntoDatos = conjuntoDatos;
         this.conjuntoPreferenciales = conjuntoPreferenciales;
@@ -25,6 +51,10 @@ public class LectorBDC {
         pacientesPreferenciales = new ArrayList<>();
     }
 
+    /**
+     * Método encargado de transformar el conjunto de datos completo
+     * @return true si el proceso se completó, false de lo contrario
+     */
     public boolean transformarDatos(){
         logger.log(Level.INFO,"Transformando datos recibidos");
         boolean exitoso = true;
@@ -84,6 +114,10 @@ public class LectorBDC {
         return exitoso;
     }
 
+    /**
+     * Método encargado de transformar los datos de pacientes preferenciales
+     * @return true si el proceso se completó, false de lo contrario
+     */
     public boolean transformarPreferenciales(){
         logger.log(Level.INFO, "Transformando datos de pacientes preferenciales");
         boolean exitoso = true;
@@ -125,7 +159,15 @@ public class LectorBDC {
         return exitoso;
     }
 
+    /**
+     * Método que retorna la lista de citas médicas
+     * @return lista con objetos CitaMedica
+     */
     public ArrayList<CitaMedica> getCitasMedicas(){return citasMedicas;}
 
+    /**
+     * Método que retorna la lista de pacientes preferenciales
+     * @return lista con objetos Paciente
+     */
     public ArrayList<Paciente> getPacientesPreferenciales(){return pacientesPreferenciales;}
 }

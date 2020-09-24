@@ -12,23 +12,61 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.FileHandler;
 
+/**
+ * Clase que administra la conexión con la base de datos local postgres
+ */
 public class AdministradorBDL {
 
+    /**
+     * Atributo que modela las citas médicas
+     */
     private ArrayList<CitaMedica> citasMedicas;
+
+    /**
+     * Atributo que modela la lista de pacientes preferenciales
+     */
     private ArrayList<Paciente> pacientesPreferenciales;
+
+    /**
+     * Atributo que guarda la conexión
+     */
     private Connection conexion;
 
+    /**
+     * Consante que modela el string de conexión con postgres
+     */
     private static final String URL = "jdbc:postgresql://localhost:5432/informix";
+
+    /**
+     * Constante que guarda el nombre de usuario de la BD de postgres
+     */
     private static final String USUARIO = "postgres";
+
+    /**
+     * Constante que guarda la contraseña de la BD de postgres
+     */
     private static final String CONTRASENIA = "12345";
+
+    /**
+     * Constante que guarda el logger
+     */
     public static final Logger logger = Logger.getRootLogger();
 
+    /**
+     * Constructor de la clase de conexión con postgres
+     * @param citasMedicas lista de citas médicas
+     * @param pacientesPreferenciales lista de pacientes preferenciales
+     */
     public AdministradorBDL(ArrayList<CitaMedica> citasMedicas, ArrayList<Paciente> pacientesPreferenciales){
         this.citasMedicas = citasMedicas;
         this.pacientesPreferenciales = pacientesPreferenciales;
         FileHandler fh;
     }
 
+    /**
+     * Método que realiza la conexión con postgres
+     * @return true si se realizó la conexión, false de lo contrario
+     */
     public boolean conectarseBDPostgres(){
         boolean exitoso;
         conexion = null;
@@ -44,6 +82,10 @@ public class AdministradorBDL {
         return exitoso;
     }
 
+    /**
+     * Método encargado de limpiar las tablas de datos
+     * @return true si fue posible hacer la limpieza, false de lo contrario
+     */
     public boolean vaciarTablas(){
         String deleteCitaMedica = "DELETE FROM citamedica;";
         String deletePaciente = "DELETE FROM paciente;";
@@ -69,6 +111,9 @@ public class AdministradorBDL {
         return exitoso;
     }
 
+    /**
+     * Método encargado de guardar los pacientes preferenciales en la BD
+     */
     public void guardarPacientesPreferenciales(){
         int contador = 0;
         for(Paciente pacientePreferencial:pacientesPreferenciales){
@@ -90,6 +135,9 @@ public class AdministradorBDL {
         }
     }
 
+    /**
+     * Método encargadao de guardar los datos en la BD
+     */
     public void guardarDatosBDPostgres(){
         int contador = 0;
         for(CitaMedica citaMedica : citasMedicas){
@@ -149,6 +197,10 @@ public class AdministradorBDL {
         logger.log(Level.INFO, msj);
     }
 
+    /**
+     * Método encargado de crear la tabla de consultas completa
+     * @return true si fue posible crear la tabla, false de lo contrario
+     */
     public boolean crearTablaConsultasFull(){
         boolean exitoso = true;
         String queryConsultasFull = "CREATE TABLE consultasfull AS(\n" +
@@ -167,6 +219,10 @@ public class AdministradorBDL {
         return exitoso;
     }
 
+    /**
+     * Método encargado de crear las agrupaciones por número de citas
+     * @return lista de agrupaciones de citas
+     */
     public ArrayList<AgrupacionCitas> crearAgrupaciones(){
         ArrayList<AgrupacionCitas> listaAgrupaciones = new ArrayList<>();
         String queryAgrupacion = "SELECT id_paciente, COUNT(id_paciente) as num_citas FROM consultasfull GROUP BY id_paciente;";
@@ -191,6 +247,10 @@ public class AdministradorBDL {
         return listaAgrupaciones;
     }
 
+    /**
+     * Método encargado de crear las tablas de consultas ordenadas por fecha
+     * @param listaAgrupaciones lista de agrupaciones de citas
+     */
     public void crearTablasAuxiliares(ArrayList<AgrupacionCitas> listaAgrupaciones){
         String deleteAgrupacion = "DELETE FROM consultas";
         try {
