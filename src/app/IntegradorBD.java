@@ -73,17 +73,17 @@ public class IntegradorBD extends Thread {
             //Revision para actualizacion automática
             logger.log(Level.INFO, "SE INICIÓ EL SERVICIO DE ACTUALIZACIÓN");
             logger.log(Level.INFO, "----------------------------------------");
-            boolean conexionInformix = false;
             logger.log(Level.INFO, "Conectandose a informix");
             LectorCredenciales lectorCredenciales = new LectorCredenciales();
             String[] credencialesInformix = lectorCredenciales.leerCredencialesInformix();
             DriverConexionBDC driverConexionBDC = new DriverConexionBDC(credencialesInformix);
-            conexionInformix = driverConexionBDC.conectarseBDInformix();
+            boolean conexionInformix = driverConexionBDC.conectarseBDInformix();
             if(conexionInformix){
                 driverConexionBDC.realizarPeticionDatos();
                 driverConexionBDC.peticionPacientesPreferenciales();
                 ResultSet conjuntoDatos = driverConexionBDC.getConjuntoDatos();
                 ResultSet conjuntoPreferenciales = driverConexionBDC.getConjuntoPreferenciales();
+                driverConexionBDC.cerrarConexion();
                 if(conjuntoDatos != null && conjuntoPreferenciales != null){
                     LectorBDC lector = new LectorBDC(conjuntoDatos, conjuntoPreferenciales);
                     boolean transformacionPreferenciales = lector.transformarPreferenciales();
@@ -114,9 +114,11 @@ public class IntegradorBD extends Thread {
                                     }
                                     corriendo.set(false);
                                 }
+                                administradorBDL.cerrarConexion();
                             }else{
                                 //No se pudo conectar con postgres
                                 logger.log(Level.FATAL, "No se pudo conectar con postgres");
+                                administradorBDL.cerrarConexion();
                                 corriendo.set(false);
                             }
                         }else{
@@ -137,6 +139,7 @@ public class IntegradorBD extends Thread {
             }else{
                 //No hubo conexion con informix
                 logger.log(Level.FATAL, "No hay conexión con informix");
+                driverConexionBDC.cerrarConexion();
                 corriendo.set(false);
             }
         }

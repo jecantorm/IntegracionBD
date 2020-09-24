@@ -43,6 +43,9 @@ public class LectorCredenciales {
                 rta[contador] = line.split("=")[1];
                 contador++;
             }
+            br.close();
+            in.close();
+            fis.close();
         } catch (FileNotFoundException e) {
             logger.log(Level.FATAL, "No se encontró el archivo de credenciales de informix");
             try {
@@ -79,6 +82,9 @@ public class LectorCredenciales {
                 rta[contador] = line.split("=")[1];
                 contador++;
             }
+            br.close();
+            in.close();
+            fis.close();
         } catch (FileNotFoundException e) {
             logger.log(Level.FATAL, "No se encontró el archivo de credenciales de postgres");
             try {

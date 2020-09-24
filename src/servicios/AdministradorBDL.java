@@ -98,6 +98,21 @@ public class AdministradorBDL {
     }
 
     /**
+     * Método encargado de cerrar la conexión con postgres
+     */
+    public void cerrarConexion(){
+        try {
+            logger.log(Level.INFO, "Cerrando la conexión con postgres");
+            conexion.commit();
+            conexion.close();
+        } catch (SQLException e) {
+            logger.log(Level.WARN, "Error al cerrar la conexión con postgres \n" +
+                    "Causa: " + e);
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Método encargado de limpiar las tablas de datos
      * @return true si fue posible hacer la limpieza, false de lo contrario
      */

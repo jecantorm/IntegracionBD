@@ -162,4 +162,19 @@ public class DriverConexionBDC {
      * @return ResultSet con los datos de pacientes preferenciales
      */
     public ResultSet getConjuntoPreferenciales(){return conjuntoPreferenciales;}
+
+    /**
+     * Método encargado de cerrar la conexión con informix
+     */
+    public void cerrarConexion(){
+        try {
+            logger.log(Level.INFO, "Cerrando la conexión con informix");
+            conn.commit();
+            conn.close();
+        } catch (SQLException e) {
+            logger.log(Level.WARN, "Error al cerrar la conexión con informix\n" +
+                    "Causa: " + e);
+            e.printStackTrace();
+        }
+    }
 }
