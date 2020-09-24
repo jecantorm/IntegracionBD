@@ -49,7 +49,9 @@ public class DriverConexionBDC {
     /**
      * Constructor de la clase
      */
-    public DriverConexionBDC(){
+    public DriverConexionBDC(String[] credencialesInformix){
+        String url_informix = "jdbc:informix-sqli://172.17.130.190:1525/basdat:INFORMIXSERVER" +
+                "=servinte_tcp;user=" + credencialesInformix[0] + ";password=" + credencialesInformix[1];
         conjuntoDatos = null;
         conjuntoPreferenciales = null;
     }

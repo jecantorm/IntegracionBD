@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import servicios.AdministradorBDL;
 import servicios.DriverConexionBDC;
 import servicios.LectorBDC;
+import servicios.LectorCredenciales;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -74,7 +75,9 @@ public class IntegradorBD extends Thread {
             logger.log(Level.INFO, "----------------------------------------");
             boolean conexionInformix = false;
             logger.log(Level.INFO, "Conectandose a informix");
-            DriverConexionBDC driverConexionBDC = new DriverConexionBDC();
+            LectorCredenciales lectorCredenciales = new LectorCredenciales();
+            String[] credencialesInformix = lectorCredenciales.leerCredencialesInformix();
+            DriverConexionBDC driverConexionBDC = new DriverConexionBDC(credencialesInformix);
             conexionInformix = driverConexionBDC.conectarseBDInformix();
             if(conexionInformix){
                 driverConexionBDC.realizarPeticionDatos();
