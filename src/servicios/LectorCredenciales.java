@@ -5,12 +5,30 @@ import org.apache.log4j.Logger;
 
 import java.io.*;
 
+/**
+ * Clase encargada de leer las credenciales de conexión
+ */
 public class LectorCredenciales {
 
+    /**
+     * Constante que guarda la ruta del archivo de credenciales de informix
+     */
     private static final String RUTA_INFORMIX = "./data/informix.txt";
+
+    /**
+     * Constante que guarda la ruta del archivo de credenciales de postgres
+     */
     private static final String RUTA_POSTGRES = "./data/postgres.txt";
+
+    /**
+     * Constante que guarda el logger
+     */
     private static final Logger logger = Logger.getRootLogger();
 
+    /**
+     * Método encargado de leer las credenciales de informix
+     * @return arreglo con las credenciales
+     */
     public String[] leerCredencialesInformix(){
         String[] rta = new String[2];
         File file = new File(RUTA_INFORMIX);
@@ -43,6 +61,10 @@ public class LectorCredenciales {
         return rta;
     }
 
+    /**
+     * Método encargado de leer las credenciales de postgres
+     * @return arreglo con las credenciales
+     */
     public String[] leerCredencialesPostgres(){
         String[] rta = new String[2];
         File file = new File(RUTA_POSTGRES);
@@ -74,12 +96,4 @@ public class LectorCredenciales {
         }
         return rta;
     }
-
-//    public static void main(String[] args){
-//        LectorCredenciales lc = new LectorCredenciales();
-//        String[] credInformix = lc.leerCredencialesInformix();
-//        String[] credPostgres = lc.leerCredencialesPostgres();
-//        System.out.println("Usuario: " + credInformix[0] + " Contraseña: " + credInformix[1]);
-//        System.out.println("Usuario: " + credPostgres[0] + " Contraseña: " + credPostgres[1]);
-//    }
 }
