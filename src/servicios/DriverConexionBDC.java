@@ -169,7 +169,6 @@ public class DriverConexionBDC {
     public void cerrarConexion(){
         try {
             logger.log(Level.INFO, "Cerrando la conexión con informix");
-            conn.commit();
             conn.close();
         } catch (SQLException e) {
             logger.log(Level.WARN, "Error al cerrar la conexión con informix\n" +

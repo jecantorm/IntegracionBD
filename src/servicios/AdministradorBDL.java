@@ -103,7 +103,6 @@ public class AdministradorBDL {
     public void cerrarConexion(){
         try {
             logger.log(Level.INFO, "Cerrando la conexión con postgres");
-            conexion.commit();
             conexion.close();
         } catch (SQLException e) {
             logger.log(Level.WARN, "Error al cerrar la conexión con postgres \n" +

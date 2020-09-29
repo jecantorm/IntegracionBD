@@ -83,7 +83,6 @@ public class IntegradorBD extends Thread {
                 driverConexionBDC.peticionPacientesPreferenciales();
                 ResultSet conjuntoDatos = driverConexionBDC.getConjuntoDatos();
                 ResultSet conjuntoPreferenciales = driverConexionBDC.getConjuntoPreferenciales();
-                driverConexionBDC.cerrarConexion();
                 if(conjuntoDatos != null && conjuntoPreferenciales != null){
                     LectorBDC lector = new LectorBDC(conjuntoDatos, conjuntoPreferenciales);
                     boolean transformacionPreferenciales = lector.transformarPreferenciales();
@@ -136,6 +135,7 @@ public class IntegradorBD extends Thread {
                     logger.log(Level.FATAL, "No se recibieron los datos de informix correctamente");
                     corriendo.set(false);
                 }
+                driverConexionBDC.cerrarConexion();
             }else{
                 //No hubo conexion con informix
                 logger.log(Level.FATAL, "No hay conexión con informix");
