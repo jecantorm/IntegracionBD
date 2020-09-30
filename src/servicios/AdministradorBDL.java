@@ -80,12 +80,12 @@ public class AdministradorBDL {
             rta = false;
         }
         if(rta && lista.size() == 5){
-            url_postgres = "jdbc:postgresql://" + lista.get(0) + ":" + lista.get(1) + "/" + lista.get(2);
-            usuario = lista.get(3);
-            contrasenia = lista.get(4);
-            System.out.println("URL postgres: " + url_postgres);
-            System.out.println("usuario: " + usuario);
-            System.out.println("Contraseña: " + contrasenia);
+            url_postgres = "jdbc:postgresql://"
+                    + lista.get(0).split("=")[1] + ":"
+                    + lista.get(1).split("=")[1] + "/"
+                    + lista.get(2).split("=")[1];
+            usuario = lista.get(3).split("=")[1];
+            contrasenia = lista.get(4).split("=")[1];
         }else{
             logger.log(Level.FATAL,"El archivo de credenciales de postgres cuenta con un número " +
                     "de parámetros incorrecto. Revise las líneas y espacios vacíos");

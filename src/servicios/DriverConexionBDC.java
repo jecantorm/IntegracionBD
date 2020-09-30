@@ -65,9 +65,12 @@ public class DriverConexionBDC {
             rta = false;
         }
         if(rta && lista.size() == 6){
-            url_informix = "jdbc:informix-sqli://" + lista.get(0) + ":" + lista.get(1) +
-                    "/" + lista.get(2) + ":INFORMIXSERVER=" + lista.get(3) + ";user=" +
-                    lista.get(4) + ";password=" + lista.get(5);
+            url_informix = "jdbc:informix-sqli://" + lista.get(0).split("=")[1] + ":"
+                    + lista.get(1).split("=")[1] +
+                    "/" + lista.get(2).split("=")[1] + ":INFORMIXSERVER="
+                    + lista.get(3).split("=")[1] + ";user=" +
+                    lista.get(4).split("=")[1] + ";password=" + lista.get(5).split("=")[1];
+            System.out.println("URL_INFORMIX: " + url_informix);
         }else{
             logger.log(Level.FATAL,"El archivo de credenciales de informix cuenta con un número " +
                     "de parámetros incorrecto. Revise las líneas y espacios vacíos");
