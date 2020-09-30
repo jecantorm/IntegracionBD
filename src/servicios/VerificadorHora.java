@@ -2,13 +2,19 @@ package servicios;
 
 import app.IntegradorBD;
 import app.MainActualizacionInstantanea;
+import app.MainActualizacionesAutomaticas;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**

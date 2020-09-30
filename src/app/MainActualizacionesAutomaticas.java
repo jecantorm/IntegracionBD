@@ -2,12 +2,19 @@ package app;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import servicios.LectorArchivos;
 import servicios.VerificadorHora;
 
+import javax.swing.text.DateFormatter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -20,47 +27,44 @@ public class MainActualizacionesAutomaticas {
      */
     public static final Logger logger = Logger.getRootLogger();
 
-    /**
-     * Método encargado de correr los actualizadores automáticos
-     * @param hora1 hora 1 de actualización
-     * @param hora2 hora 2 de actualización
-     */
-    private void correrActualizadoresAutomaticos(String hora1, String hora2){
-        VerificadorHora verificadorHora1 = new VerificadorHora();
-        verificadorHora1.establecerHoraActualizacion(hora1);
+    private static final String RUTA_ARCHIVO = "./data/horas.txt";
 
-        VerificadorHora verificadorHora2 = new VerificadorHora();
-        verificadorHora2.establecerHoraActualizacion(hora2);
+    public void leerArchivoHorasActualizacion() throws Exception {
+        List<String> lista = LectorArchivos.leerArchivo(RUTA_ARCHIVO);
+        if(lista.isEmpty()){
+            throw new Exception("No se cuenta con horas de actualización automáticas en el archivo");
+        }
+        for(String linea: lista){
+            String strHora = linea.split("=")[1];
+            DateFormat formatter = new SimpleDateFormat("HH:mm");
+            try{
+                Time hora = new Time(formatter.parse(strHora).getTime());
+                crearVerificadorHora(strHora);
+            }catch (ParseException parseException){
+                logger.log(Level.WARN, "No se creó el verificador automático para la hora porque no está bien " +
+                        "definido. En la línea: " + linea);
+            }
+        }
+    }
 
-        verificadorHora1.start();
-        verificadorHora2.start();
+    public void crearVerificadorHora(String horaActualizacion){
+        System.out.println("Creando verificador para " + horaActualizacion);
+        VerificadorHora verificadorHora = new VerificadorHora();
+        verificadorHora.establecerHoraActualizacion(horaActualizacion);
+        verificadorHora.start();
     }
 
     /**
      * Método main, encargado de extraer las horas de actualización e iniciar la aplicación
-     * @param args
+     * @param args argumentos del metodo main
      */
     public static void main(String[] args){
-        File archivoProperties = new File("./data/horas.properties");
+        MainActualizacionesAutomaticas ma = new MainActualizacionesAutomaticas();
         try {
-            FileReader fr = new FileReader(archivoProperties);
-            Properties properties = new Properties();
-            properties.load(fr);
-            String hora1 = properties.getProperty("hora1");
-            String hora2 = properties.getProperty("hora2");
-            logger.log(Level.INFO, "Las horas obtenidas del archivo son: \n" +
-                    "-Hora 1: " + hora1 + "\n" +
-                    "-Hora 2: " + hora2);
-            MainActualizacionesAutomaticas msg = new MainActualizacionesAutomaticas();
-            msg.correrActualizadoresAutomaticos(hora1,hora2);
-        } catch (FileNotFoundException e) {
-            //TODO: completar la descripción del error
-            logger.log(Level.FATAL, "No se encontró el archivo de propiedades\n" +
-                    "Causa: " + e.getCause());
-        } catch (IOException e) {
-            //TODO: completar la descripción del error
-            logger.log(Level.FATAL, "El archivo de propiedades no se encuentra bien definido\n" +
-                    "Causa: " + e.getCause());
+            ma.leerArchivoHorasActualizacion();
+        } catch (Exception e) {
+            logger.log(Level.FATAL, "Error al leer el archivo de horas de actualización automática\n" +
+                    "Causa: " + e);
             e.printStackTrace();
         }
     }

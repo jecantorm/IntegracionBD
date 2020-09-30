@@ -147,4 +147,8 @@ public class IntegradorBD extends Thread {
             interfaz.activarBotonCorrer(true);
         }
     }
+
+    private void leerConfiguracion(){
+
+    }
 }
