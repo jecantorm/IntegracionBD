@@ -74,81 +74,86 @@ public class IntegradorBD extends Thread {
             logger.log(Level.INFO, "SE INICIÓ EL SERVICIO DE ACTUALIZACIÓN");
             logger.log(Level.INFO, "----------------------------------------");
             logger.log(Level.INFO, "Conectandose a informix");
-            LectorCredenciales lectorCredenciales = new LectorCredenciales();
-            String[] credencialesInformix = lectorCredenciales.leerCredencialesInformix();
-            DriverConexionBDC driverConexionBDC = new DriverConexionBDC(credencialesInformix);
-            boolean conexionInformix = driverConexionBDC.conectarseBDInformix();
-            if(conexionInformix){
-                driverConexionBDC.realizarPeticionDatos();
-                driverConexionBDC.peticionPacientesPreferenciales();
-                ResultSet conjuntoDatos = driverConexionBDC.getConjuntoDatos();
-                ResultSet conjuntoPreferenciales = driverConexionBDC.getConjuntoPreferenciales();
-                if(conjuntoDatos != null && conjuntoPreferenciales != null){
-                    LectorBDC lector = new LectorBDC(conjuntoDatos, conjuntoPreferenciales);
-                    boolean transformacionPreferenciales = lector.transformarPreferenciales();
-                    if(transformacionPreferenciales){
-                        boolean transformacionDatos = lector.transformarDatos();
-                        if(transformacionDatos){
-                            ArrayList<CitaMedica> citasMedicas = lector.getCitasMedicas();
-                            ArrayList<Paciente> pacientesPreferenciales = lector.getPacientesPreferenciales();
-                            String[] credencialesPostgres = lectorCredenciales.leerCredencialesPostgres();
-                            AdministradorBDL administradorBDL
-                                    = new AdministradorBDL(credencialesPostgres,citasMedicas, pacientesPreferenciales);
-                            boolean conexionPostgres = administradorBDL.conectarseBDPostgres();
-                            if(conexionPostgres){
-                                boolean vaciarTablas = administradorBDL.vaciarTablas();
-                                if(vaciarTablas){
-                                    administradorBDL.guardarPacientesPreferenciales();
-                                    administradorBDL.guardarDatosBDPostgres();
-                                    boolean tablaConsultasFull = administradorBDL.crearTablaConsultasFull();
-                                    if(tablaConsultasFull){
-                                        ArrayList<AgrupacionCitas> ls = administradorBDL.crearAgrupaciones();
-                                        administradorBDL.crearTablasAuxiliares(ls);
-                                        logger.log(Level.INFO, "FINALIZÓ EL SERVICIO DE ACTUALIZACIÓN" +
-                                                " SATISFACTORIAMENTE");
+            DriverConexionBDC driverConexionBDC = new DriverConexionBDC();
+            boolean credencialesInformix = driverConexionBDC.leerCredenciales();
+            if(credencialesInformix){
+                boolean conexionInformix = driverConexionBDC.conectarseBDInformix();
+                if(conexionInformix){
+                    driverConexionBDC.realizarPeticionDatos();
+                    driverConexionBDC.peticionPacientesPreferenciales();
+                    ResultSet conjuntoDatos = driverConexionBDC.getConjuntoDatos();
+                    ResultSet conjuntoPreferenciales = driverConexionBDC.getConjuntoPreferenciales();
+                    if(conjuntoDatos != null && conjuntoPreferenciales != null){
+                        LectorBDC lector = new LectorBDC(conjuntoDatos, conjuntoPreferenciales);
+                        boolean transformacionPreferenciales = lector.transformarPreferenciales();
+                        if(transformacionPreferenciales){
+                            boolean transformacionDatos = lector.transformarDatos();
+                            if(transformacionDatos){
+                                ArrayList<CitaMedica> citasMedicas = lector.getCitasMedicas();
+                                ArrayList<Paciente> pacientesPreferenciales = lector.getPacientesPreferenciales();
+                                AdministradorBDL administradorBDL
+                                        = new AdministradorBDL(citasMedicas, pacientesPreferenciales);
+                                boolean credencialesPostgres = administradorBDL.leerCredenciales();
+                                if(credencialesPostgres){
+                                    boolean conexionPostgres = administradorBDL.conectarseBDPostgres();
+                                    if(conexionPostgres){
+                                        boolean vaciarTablas = administradorBDL.vaciarTablas();
+                                        if(vaciarTablas){
+                                            administradorBDL.guardarPacientesPreferenciales();
+                                            administradorBDL.guardarDatosBDPostgres();
+                                            boolean tablaConsultasFull = administradorBDL.crearTablaConsultasFull();
+                                            if(tablaConsultasFull){
+                                                ArrayList<AgrupacionCitas> ls = administradorBDL.crearAgrupaciones();
+                                                administradorBDL.crearTablasAuxiliares(ls);
+                                                logger.log(Level.INFO, "FINALIZÓ EL SERVICIO DE ACTUALIZACIÓN" +
+                                                        " SATISFACTORIAMENTE");
+                                            }else{
+                                                //No se creó la tabla de consultas full
+                                                logger.log(Level.INFO,
+                                                        "No se guardaron las consultas en postgres");
+                                            }
+                                            corriendo.set(false);
+                                        }
+                                        administradorBDL.cerrarConexion();
                                     }else{
-                                        //No se creó la tabla de consultas full
-                                        logger.log(Level.INFO,
-                                                "No se guardaron las consultas en postgres");
+                                        //No se pudo conectar con postgres
+                                        logger.log(Level.FATAL, "No se pudo conectar con postgres");
+                                        administradorBDL.cerrarConexion();
+                                        corriendo.set(false);
                                     }
+                                }else{
+                                    logger.log(Level.FATAL, "No se cuenta con las credenciales de postgres.");
                                     corriendo.set(false);
                                 }
-                                administradorBDL.cerrarConexion();
                             }else{
-                                //No se pudo conectar con postgres
-                                logger.log(Level.FATAL, "No se pudo conectar con postgres");
-                                administradorBDL.cerrarConexion();
+                                //No se transformaron los datos
+                                logger.log(Level.FATAL, "No se transformarons los datos de informmix");
                                 corriendo.set(false);
                             }
                         }else{
-                            //No se transformaron los datos
-                            logger.log(Level.FATAL, "No se transformarons los datos de informmix");
+                            //No se transformaron los datos preferenciales
+                            logger.log(Level.FATAL, "No se transformaron los datos de pacientes preferenciales");
                             corriendo.set(false);
                         }
                     }else{
-                        //No se transformaron los datos preferenciales
-                        logger.log(Level.FATAL, "No se transformaron los datos de pacientes preferenciales");
+                        //No se obtuvieron datos desde informix
+                        logger.log(Level.FATAL, "No se recibieron los datos de informix correctamente");
                         corriendo.set(false);
                     }
+                    driverConexionBDC.cerrarConexion();
                 }else{
-                    //No se obtuvieron datos desde informix
-                    logger.log(Level.FATAL, "No se recibieron los datos de informix correctamente");
+                    //No hubo conexion con informix
+                    logger.log(Level.FATAL, "No hay conexión con informix");
+                    driverConexionBDC.cerrarConexion();
                     corriendo.set(false);
                 }
-                driverConexionBDC.cerrarConexion();
             }else{
-                //No hubo conexion con informix
-                logger.log(Level.FATAL, "No hay conexión con informix");
-                driverConexionBDC.cerrarConexion();
+                logger.log(Level.FATAL, "No se cuenta con las credenciales de informix");
                 corriendo.set(false);
             }
         }
         if(interfaz != null){
             interfaz.activarBotonCorrer(true);
         }
-    }
-
-    private void leerConfiguracion(){
-
     }
 }

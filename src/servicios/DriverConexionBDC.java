@@ -4,6 +4,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.List;
 
 /**
  * Clase encargada de conectarse con la BD informix
@@ -38,22 +39,40 @@ public class DriverConexionBDC {
     /**
      * Constante que modela el string de conexión con informix
      */
-    private final String url_informix;
+    private String url_informix;
 
     /**
      * Constante que modela el número máxímo de intentos de reconexión
      */
     private static final int MAX_INTENTOS = 3;
 
+    private static final String RUTA_ARCHIVO="./data/informix.txt";
+
     /**
-     * Constructor de la clase
-     * @param credencialesInformix credenciales de conexión con informix
+     * Constructor de la clase de conexión con informix
      */
-    public DriverConexionBDC(String[] credencialesInformix){
+    public DriverConexionBDC(){
         conjuntoDatos = null;
         conjuntoPreferenciales = null;
-        url_informix = "jdbc:informix-sqli://172.17.130.190:1525/basdat:INFORMIXSERVER" +
-                "=servinte_tcp;user=" + credencialesInformix[0] + ";password=" + credencialesInformix[1];
+    }
+
+    public boolean leerCredenciales(){
+        boolean rta = true;
+        List<String> lista = LectorArchivos.leerArchivo(RUTA_ARCHIVO);
+        if(lista.isEmpty()){
+            logger.log(Level.FATAL,"No se cuenta con las credenciales de la BD informix en el archivo. " +
+                    "Revise el archivo y reinicie la apliciación.");
+            rta = false;
+        }
+        if(rta && lista.size() == 6){
+            url_informix = "jdbc:informix-sqli://" + lista.get(0) + ":" + lista.get(1) +
+                    "/" + lista.get(2) + ":INFORMIXSERVER=" + lista.get(3) + ";user=" +
+                    lista.get(4) + ";password=" + lista.get(5);
+        }else{
+            logger.log(Level.FATAL,"El archivo de credenciales de informix cuenta con un número " +
+                    "de parámetros incorrecto. Revise las líneas y espacios vacíos");
+        }
+        return rta;
     }
 
     /**

@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.FileHandler;
 
 /**
@@ -35,17 +36,17 @@ public class AdministradorBDL {
     /**
      * Consante que modela el string de conexión con postgres
      */
-    private static final String URL = "jdbc:postgresql://localhost:5432/informix";
+    private String url_postgres;
 
     /**
      * Constante que guarda el nombre de usuario de la BD de postgres
      */
-    private final String usuario;
+    private String usuario;
 
     /**
      * Constante que guarda la contraseña de la BD de postgres
      */
-    private final String contrasenia;
+    private String contrasenia;
 
     /**
      * Constante que guarda el logger
@@ -57,18 +58,39 @@ public class AdministradorBDL {
      */
     private static final int MAX_INTENTOS = 3;
 
+    private static final String RUTA_ARCHIVO = "./data/postgres.txt";
+
     /**
      * Constructor de la clase de conexión con postgres
-     * @param credenciales credenciales de conexión con postgres
      * @param citasMedicas lista de citas médicas
      * @param pacientesPreferenciales lista de pacientes preferenciales
      */
-    public AdministradorBDL(String[] credenciales, ArrayList<CitaMedica> citasMedicas,
+    public AdministradorBDL(ArrayList<CitaMedica> citasMedicas,
                             ArrayList<Paciente> pacientesPreferenciales){
         this.citasMedicas = citasMedicas;
         this.pacientesPreferenciales = pacientesPreferenciales;
-        this.usuario = credenciales[0];
-        this.contrasenia = credenciales[1];
+    }
+
+    public boolean leerCredenciales(){
+        boolean rta = true;
+        List<String> lista = LectorArchivos.leerArchivo(RUTA_ARCHIVO);
+        if(lista.isEmpty()){
+            logger.log(Level.FATAL,"No se cuenta con las credenciales de la BD postgres en el archivo. " +
+                    "Revise el archivo y reinicie la apliciación.");
+            rta = false;
+        }
+        if(rta && lista.size() == 5){
+            url_postgres = "jdbc:postgresql://" + lista.get(0) + ":" + lista.get(1) + "/" + lista.get(2);
+            usuario = lista.get(3);
+            contrasenia = lista.get(4);
+            System.out.println("URL postgres: " + url_postgres);
+            System.out.println("usuario: " + usuario);
+            System.out.println("Contraseña: " + contrasenia);
+        }else{
+            logger.log(Level.FATAL,"El archivo de credenciales de postgres cuenta con un número " +
+                    "de parámetros incorrecto. Revise las líneas y espacios vacíos");
+        }
+        return rta;
     }
 
     /**
@@ -84,7 +106,7 @@ public class AdministradorBDL {
             logger.log(Level.INFO, "Realizando intento de conexión #" + contador
                         + " con Postgres");
             try{
-                conexion = DriverManager.getConnection(URL,
+                conexion = DriverManager.getConnection(url_postgres,
                         usuario, contrasenia);
                 exitoso = true;
                 logger.log(Level.INFO,"Conectado a la BD local Postgres");
