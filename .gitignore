@@ -3,3 +3,6 @@ IntegracionBD.iml
 out/
 data/
 logs/
+.classpath
+.project
+doc/modelo_clases.ucls
