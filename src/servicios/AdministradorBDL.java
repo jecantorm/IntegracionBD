@@ -58,6 +58,9 @@ public class AdministradorBDL {
      */
     private static final int MAX_INTENTOS = 3;
 
+    /**
+     * Constante que modela la ruta del archivo de credenciales de postgres
+     */
     private static final String RUTA_ARCHIVO = "./data/postgres.txt";
 
     /**
@@ -71,6 +74,10 @@ public class AdministradorBDL {
         this.pacientesPreferenciales = pacientesPreferenciales;
     }
 
+    /**
+     * Método encargado de leer las credenciales de postgres y guardarlas
+     * @return true si fue posible, false de lo contrario
+     */
     public boolean leerCredenciales(){
         boolean rta = true;
         List<String> lista = LectorArchivos.leerArchivo(RUTA_ARCHIVO);

@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import servicios.AdministradorBDL;
 import servicios.DriverConexionBDC;
 import servicios.LectorBDC;
-import servicios.LectorCredenciales;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -58,7 +57,7 @@ public class IntegradorBD extends Thread {
     }
 
     /**
-     * Método que corre el hilo
+     * Método encargado de correr el hilo principal de una actualización
      */
     @Override
     public void run() {

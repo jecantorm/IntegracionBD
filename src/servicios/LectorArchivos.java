@@ -7,10 +7,21 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase encargada de la lectura de archivos
+ */
 public class LectorArchivos {
 
+    /**
+     * Constante que guarda el logger
+     */
     private static final Logger logger = Logger.getRootLogger();
 
+    /**
+     * Método encargado de leer un archivo dada una ruta
+     * @param rutaArchivo ruta del archivo
+     * @return lista con una línea en cada posición
+     */
     public static List<String> leerArchivo(String rutaArchivo){
         File archivo = new File(rutaArchivo);
         if(!archivo.exists()){

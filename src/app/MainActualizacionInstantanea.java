@@ -48,7 +48,8 @@ public class MainActualizacionInstantanea extends JFrame{
     }
 
     /**
-     * Punto de partida de la aplicación
+     * Punto de partida de la aplicación para actualización instantánea
+     * @param args argumentos de ejecución
      */
     public static void main(String[] args){
         MainActualizacionInstantanea intefaz = new MainActualizacionInstantanea();

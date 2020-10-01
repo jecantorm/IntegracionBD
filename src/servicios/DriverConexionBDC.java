@@ -46,6 +46,9 @@ public class DriverConexionBDC {
      */
     private static final int MAX_INTENTOS = 3;
 
+    /**
+     * Constante que modela la ruta del archivo de credenciales de informix
+     */
     private static final String RUTA_ARCHIVO="./data/informix.txt";
 
     /**
@@ -56,6 +59,10 @@ public class DriverConexionBDC {
         conjuntoPreferenciales = null;
     }
 
+    /**
+     * Método encargado de leer las credenciales de informix y guardarlas
+     * @return true si fue posible, false de lo contrario
+     */
     public boolean leerCredenciales(){
         boolean rta = true;
         List<String> lista = LectorArchivos.leerArchivo(RUTA_ARCHIVO);

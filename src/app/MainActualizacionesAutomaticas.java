@@ -27,6 +27,9 @@ public class MainActualizacionesAutomaticas {
      */
     public static final Logger logger = Logger.getRootLogger();
 
+    /**
+     * Constante que modela la ruta del archivo de horas de actualización automática
+     */
     private static final String RUTA_ARCHIVO = "./data/horas.txt";
 
     public void leerArchivoHorasActualizacion() throws Exception {
@@ -47,7 +50,11 @@ public class MainActualizacionesAutomaticas {
         }
     }
 
-    public void crearVerificadorHora(String horaActualizacion){
+    /**
+     * Método encargado de crear un verificador de hora dada una hora de actualización
+     * @param horaActualizacion hora de la actualización automática
+     */
+    private void crearVerificadorHora(String horaActualizacion){
         System.out.println("Creando verificador para " + horaActualizacion);
         VerificadorHora verificadorHora = new VerificadorHora();
         verificadorHora.establecerHoraActualizacion(horaActualizacion);
@@ -55,7 +62,7 @@ public class MainActualizacionesAutomaticas {
     }
 
     /**
-     * Método main, encargado de extraer las horas de actualización e iniciar la aplicación
+     * Método main del programa para actualizaciones automáticas
      * @param args argumentos del metodo main
      */
     public static void main(String[] args){
